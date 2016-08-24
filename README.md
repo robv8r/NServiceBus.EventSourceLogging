@@ -1,2 +1,2 @@
 # NServiceBus.EventSourceLogging
-Add support for sending NServiceBus logging message as events event tracing for Windows (ETW).
+Adds support for sending NServiceBus logging message as events for event tracing for Windows (ETW).

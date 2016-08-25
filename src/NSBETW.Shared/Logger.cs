@@ -26,6 +26,7 @@
 namespace NServiceBus.EventSourceLogging
 {
     using System;
+    using JetBrains.Annotations;
     using NServiceBus.Logging;
 
     /// <summary>
@@ -34,17 +35,23 @@ namespace NServiceBus.EventSourceLogging
     public class Logger : ILog
     {
         private const string DefaultLoggerName = "Default";
-
-        private static readonly EventLogEventSource EventSourceLogger = EventLogEventSource.Log;
-
+        [NotNull]
+        private readonly IEventSourceLogger eventSourceLogger;
         private readonly string loggerName;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Logger" /> class with the given <paramref name="loggerName" />.
         /// </summary>
+        /// <param name="eventSourceLogger">The <see cref="IEventSourceLogger"/> to log to.</param>
         /// <param name="loggerName">The name of the <see cref="Logger" /> to create.</param>
-        public Logger(string loggerName)
+        public Logger([NotNull] IEventSourceLogger eventSourceLogger, [CanBeNull] string loggerName)
         {
+            if (eventSourceLogger == null)
+            {
+                throw new ArgumentNullException(nameof(eventSourceLogger));
+            }
+
+            this.eventSourceLogger = eventSourceLogger;
             this.loggerName = string.IsNullOrWhiteSpace(loggerName) ? DefaultLoggerName : loggerName;
         }
 
@@ -52,31 +59,31 @@ namespace NServiceBus.EventSourceLogging
         ///     Gets a value indicating whether logging is enabled for the <see cref="F:NServiceBus.Logging.LogLevel.Debug" />
         ///     level.
         /// </summary>
-        public bool IsDebugEnabled => EventSourceLogger.IsDebugEnabled;
+        public bool IsDebugEnabled => this.eventSourceLogger.IsDebugEnabled;
 
         /// <summary>
         ///     Gets a value indicating whether logging is enabled for the <see cref="F:NServiceBus.Logging.LogLevel.Error" />
         ///     level.
         /// </summary>
-        public bool IsErrorEnabled => EventSourceLogger.IsErrorEnabled;
+        public bool IsErrorEnabled => this.eventSourceLogger.IsErrorEnabled;
 
         /// <summary>
         ///     Gets a value indicating whether logging is enabled for the <see cref="F:NServiceBus.Logging.LogLevel.Fatal" />
         ///     level.
         /// </summary>
-        public bool IsFatalEnabled => EventSourceLogger.IsFatalEnabled;
+        public bool IsFatalEnabled => this.eventSourceLogger.IsFatalEnabled;
 
         /// <summary>
         ///     Gets a value indicating whether logging is enabled for the <see cref="F:NServiceBus.Logging.LogLevel.Info" />
         ///     level.
         /// </summary>
-        public bool IsInfoEnabled => EventSourceLogger.IsInfoEnabled;
+        public bool IsInfoEnabled => this.eventSourceLogger.IsInfoEnabled;
 
         /// <summary>
         ///     Gets a value indicating whether logging is enabled for the <see cref="F:NServiceBus.Logging.LogLevel.Warn" />
         ///     level.
         /// </summary>
-        public bool IsWarnEnabled => EventSourceLogger.IsWarnEnabled;
+        public bool IsWarnEnabled => this.eventSourceLogger.IsWarnEnabled;
 
         /// <summary>
         ///     Writes the message at the <see cref="F:NServiceBus.Logging.LogLevel.Debug" /> level.
@@ -84,7 +91,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="message">Log message.</param>
         public void Debug(string message)
         {
-            EventSourceLogger.Debug(this.loggerName, message);
+            this.eventSourceLogger.Debug(this.loggerName, message);
         }
 
         /// <summary>
@@ -94,7 +101,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="exception">An exception to be logged.</param>
         public void Debug(string message, Exception exception)
         {
-            EventSourceLogger.Debug(this.loggerName, message, exception);
+            this.eventSourceLogger.Debug(this.loggerName, message, exception);
         }
 
         /// <summary>
@@ -105,7 +112,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="args">Arguments to format.</param>
         public void DebugFormat(string format, params object[] args)
         {
-            EventSourceLogger.Debug(this.loggerName, format, args);
+            this.eventSourceLogger.Debug(this.loggerName, format, args);
         }
 
         /// <summary>
@@ -114,7 +121,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="message">Log message.</param>
         public void Error(string message)
         {
-            EventSourceLogger.Error(this.loggerName, message);
+            this.eventSourceLogger.Error(this.loggerName, message);
         }
 
         /// <summary>
@@ -124,7 +131,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="exception">An exception to be logged.</param>
         public void Error(string message, Exception exception)
         {
-            EventSourceLogger.Error(this.loggerName, message, exception);
+            this.eventSourceLogger.Error(this.loggerName, message, exception);
         }
 
         /// <summary>
@@ -135,7 +142,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="args">Arguments to format.</param>
         public void ErrorFormat(string format, params object[] args)
         {
-            EventSourceLogger.Error(this.loggerName, format, args);
+            this.eventSourceLogger.Error(this.loggerName, format, args);
         }
 
         /// <summary>
@@ -144,7 +151,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="message">Log message.</param>
         public void Fatal(string message)
         {
-            EventSourceLogger.Fatal(this.loggerName, message);
+            this.eventSourceLogger.Fatal(this.loggerName, message);
         }
 
         /// <summary>
@@ -154,7 +161,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="exception">An exception to be logged.</param>
         public void Fatal(string message, Exception exception)
         {
-            EventSourceLogger.Fatal(this.loggerName, message, exception);
+            this.eventSourceLogger.Fatal(this.loggerName, message, exception);
         }
 
         /// <summary>
@@ -165,7 +172,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="args">Arguments to format.</param>
         public void FatalFormat(string format, params object[] args)
         {
-            EventSourceLogger.Fatal(this.loggerName, format, args);
+            this.eventSourceLogger.Fatal(this.loggerName, format, args);
         }
 
         /// <summary>
@@ -174,7 +181,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="message">Log message.</param>
         public void Info(string message)
         {
-            EventSourceLogger.Info(this.loggerName, message);
+            this.eventSourceLogger.Info(this.loggerName, message);
         }
 
         /// <summary>
@@ -184,7 +191,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="exception">An exception to be logged.</param>
         public void Info(string message, Exception exception)
         {
-            EventSourceLogger.Info(this.loggerName, message, exception);
+            this.eventSourceLogger.Info(this.loggerName, message, exception);
         }
 
         /// <summary>
@@ -195,7 +202,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="args">Arguments to format.</param>
         public void InfoFormat(string format, params object[] args)
         {
-            EventSourceLogger.Info(this.loggerName, format, args);
+            this.eventSourceLogger.Info(this.loggerName, format, args);
         }
 
         /// <summary>
@@ -204,7 +211,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="message">Log message.</param>
         public void Warn(string message)
         {
-            EventSourceLogger.Warn(this.loggerName, message);
+            this.eventSourceLogger.Warn(this.loggerName, message);
         }
 
         /// <summary>
@@ -214,7 +221,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="exception">An exception to be logged.</param>
         public void Warn(string message, Exception exception)
         {
-            EventSourceLogger.Warn(this.loggerName, message, exception);
+            this.eventSourceLogger.Warn(this.loggerName, message, exception);
         }
 
         /// <summary>
@@ -225,7 +232,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="args">Arguments to format.</param>
         public void WarnFormat(string format, params object[] args)
         {
-            EventSourceLogger.Warn(this.loggerName, format, args);
+            this.eventSourceLogger.Warn(this.loggerName, format, args);
         }
     }
 }

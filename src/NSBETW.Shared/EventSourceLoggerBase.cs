@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EventLogEventSource.cs" company="Rob Winningham">
+// <copyright file="EventSourceLoggerBase.cs" company="Rob Winningham">
 //   MIT License
 //
 //   Copyright (c) 2016 Rob Winningham
@@ -28,68 +28,66 @@ namespace NServiceBus.EventSourceLogging
     using System;
     using System.Globalization;
     using JetBrains.Annotations;
-#if NET45
+    using NServiceBus.EventSourceLogging.Properties;
+#if USEMDT
     using Microsoft.Diagnostics.Tracing;
 #else
     using System.Diagnostics.Tracing;
-
 #endif
 
     /// <summary>
     ///     Creates ETW events for NServiceBus.
     /// </summary>
-    [EventSource(Name = "NServiceBus")]
-    public sealed class EventLogEventSource : EventSource
+    public abstract class EventSourceLoggerBase : EventSource, IEventSourceLogger
     {
-        private const string InvalidFormatErrorString = "Attempted to log a message with an invalid format: ";
-
-        private EventLogEventSource()
-        {
-        }
-
-        /// <summary>
-        ///     Gets the singleton instance of the <see cref="EventLogEventSource" /> type.
-        /// </summary>
-        public static EventLogEventSource Log { get; } = new EventLogEventSource();
+        private static readonly string InvalidFormatErrorString = Resources.InvalidFormatErrorString;
 
         /// <summary>
         ///     Gets a value indicating whether Debug level logging is enabled.
         /// </summary>
-        internal bool IsDebugEnabled => this.IsEnabled(EventLevel.Verbose, EventKeywords.All, EventChannel.Debug);
+        public bool IsDebugEnabled
+            => this.IsEnabled(EventLevel.Verbose, EventKeywords.All, EventChannel.Debug);
 
         /// <summary>
         ///     Gets a value indicating whether Error level logging is enabled.
         /// </summary>
-        internal bool IsErrorEnabled => this.IsEnabled(EventLevel.Error, EventKeywords.All, EventChannel.Operational);
+        public bool IsErrorEnabled
+            => this.IsEnabled(EventLevel.Error, EventKeywords.All, EventChannel.Operational);
 
         /// <summary>
         ///     Gets a value indicating whether Fatal level logging is enabled.
         /// </summary>
-        internal bool IsFatalEnabled => this.IsEnabled(EventLevel.Critical, EventKeywords.All, EventChannel.Operational)
-            ;
+        public bool IsFatalEnabled
+            => this.IsEnabled(EventLevel.Critical, EventKeywords.All, EventChannel.Operational);
 
         /// <summary>
         ///     Gets a value indicating whether Informational level logging is enabled.
         /// </summary>
-        internal bool IsInfoEnabled
+        public bool IsInfoEnabled
             => this.IsEnabled(EventLevel.Informational, EventKeywords.All, EventChannel.Operational);
 
         /// <summary>
         ///     Gets a value indicating whether Warning level logging is enabled.
         /// </summary>
-        internal bool IsWarnEnabled => this.IsEnabled(EventLevel.Warning, EventKeywords.All, EventChannel.Operational);
+        public bool IsWarnEnabled
+            => this.IsEnabled(EventLevel.Warning, EventKeywords.All, EventChannel.Operational);
+
+        /// <inheritdoc />
+        public abstract IEventSourceLogger Log
+        {
+            get;
+        }
 
         /// <summary>
         ///     If Debug level logging is enabled, writes an event with the given parameters.
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
-        [Event(2, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Message = "{0} : {1}")]
-        public void Debug(string logger, string message)
+        public virtual void Debug(string logger, string message)
         {
             if (this.IsDebugEnabled)
             {
-                this.WriteEvent(2, logger, message);
+                this.WriteEvent(EventId.Debug, logger, message);
             }
         }
 
@@ -99,8 +97,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
         /// <param name="exception">The exception to be logged.</param>
-        [NonEvent]
-        public void Debug(string logger, string message, Exception exception)
+        public virtual void Debug(string logger, string message, Exception exception)
         {
             if (!this.IsDebugEnabled)
             {
@@ -130,8 +127,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="format">A composite format string.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        [NonEvent]
-        public void Debug(string logger, string format, params object[] args)
+        public virtual void Debug(string logger, string format, params object[] args)
         {
             if (!this.IsDebugEnabled || format == null || args == null)
             {
@@ -155,19 +151,17 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="message">The message to be logged.</param>
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
-        /// <param name="exceptionString">The string representation of the exception to be logged. This includes the stack trace.</param>
-        [PublicAPI]
-        [Event(12, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Message = "{0} : {1} : {2} : {3} : {4}")]
-        public void DebugException(
+        /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        public virtual void DebugException(
             string logger,
             string message,
             string exceptionType,
             string exceptionMessage,
-            string exceptionString)
+            string exceptionValue)
         {
             if (this.IsDebugEnabled)
             {
-                this.WriteEvent(12, logger, message, exceptionType, exceptionMessage, exceptionString);
+                this.WriteEvent(EventId.DebugException, logger, message, exceptionType, exceptionMessage, exceptionValue);
             }
         }
 
@@ -176,12 +170,11 @@ namespace NServiceBus.EventSourceLogging
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
-        [Event(5, Level = EventLevel.Error, Channel = EventChannel.Operational, Message = "{0} : {1}")]
-        public void Error(string logger, string message)
+        public virtual void Error(string logger, string message)
         {
             if (this.IsErrorEnabled)
             {
-                this.WriteEvent(5, logger, message);
+                this.WriteEvent(EventId.Error, logger, message);
             }
         }
 
@@ -191,8 +184,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
         /// <param name="exception">The exception to be logged.</param>
-        [NonEvent]
-        public void Error(string logger, string message, Exception exception)
+        public virtual void Error(string logger, string message, Exception exception)
         {
             if (!this.IsErrorEnabled)
             {
@@ -220,8 +212,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="format">A composite format string.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        [NonEvent]
-        public void Error(string logger, string format, params object[] args)
+        public virtual void Error(string logger, string format, params object[] args)
         {
             if (!this.IsErrorEnabled || format == null || args == null)
             {
@@ -245,19 +236,17 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="message">The message to be logged.</param>
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
-        /// <param name="exceptionString">The string representation of the exception to be logged. This includes the stack trace.</param>
-        [PublicAPI]
-        [Event(15, Level = EventLevel.Error, Channel = EventChannel.Operational, Message = "{0} : {1} : {2} : {3} : {4}")]
-        public void ErrorException(
+        /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        public virtual void ErrorException(
             string logger,
             string message,
             string exceptionType,
             string exceptionMessage,
-            string exceptionString)
+            string exceptionValue)
         {
             if (this.IsErrorEnabled)
             {
-                this.WriteEvent(15, logger, message, exceptionType, exceptionMessage, exceptionString);
+                this.WriteEvent(EventId.ErrorException, logger, message, exceptionType, exceptionMessage, exceptionValue);
             }
         }
 
@@ -266,12 +255,11 @@ namespace NServiceBus.EventSourceLogging
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
-        [Event(6, Level = EventLevel.Critical, Channel = EventChannel.Operational, Message = "{0} : {1}")]
-        public void Fatal(string logger, string message)
+        public virtual void Fatal(string logger, string message)
         {
             if (this.IsFatalEnabled)
             {
-                this.WriteEvent(6, logger, message);
+                this.WriteEvent(EventId.Fatal, logger, message);
             }
         }
 
@@ -281,8 +269,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
         /// <param name="exception">The exception to be logged.</param>
-        [NonEvent]
-        public void Fatal(string logger, string message, Exception exception)
+        public virtual void Fatal(string logger, string message, Exception exception)
         {
             if (!this.IsFatalEnabled)
             {
@@ -310,8 +297,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="format">A composite format string.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        [NonEvent]
-        public void Fatal(string logger, string format, params object[] args)
+        public virtual void Fatal(string logger, string format, params object[] args)
         {
             if (!this.IsFatalEnabled || format == null || args == null)
             {
@@ -335,19 +321,17 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="message">The message to be logged.</param>
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
-        /// <param name="exceptionString">The string representation of the exception to be logged. This includes the stack trace.</param>
-        [PublicAPI]
-        [Event(16, Level = EventLevel.Critical, Channel = EventChannel.Operational, Message = "{0} : {1} : {2} : {3} : {4}")]
-        public void FatalException(
+        /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        public virtual void FatalException(
             string logger,
             string message,
             string exceptionType,
             string exceptionMessage,
-            string exceptionString)
+            string exceptionValue)
         {
             if (this.IsFatalEnabled)
             {
-                this.WriteEvent(16, logger, message, exceptionType, exceptionMessage, exceptionString);
+                this.WriteEvent(EventId.FatalException, logger, message, exceptionType, exceptionMessage, exceptionValue);
             }
         }
 
@@ -356,12 +340,11 @@ namespace NServiceBus.EventSourceLogging
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
-        [Event(3, Level = EventLevel.Informational, Channel = EventChannel.Operational, Message = "{0} : {1}")]
-        public void Info(string logger, string message)
+        public virtual void Info(string logger, string message)
         {
             if (this.IsInfoEnabled)
             {
-                this.WriteEvent(3, logger, message);
+                this.WriteEvent(EventId.Info, logger, message);
             }
         }
 
@@ -371,8 +354,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
         /// <param name="exception">The exception to be logged.</param>
-        [NonEvent]
-        public void Info(string logger, string message, Exception exception)
+        public virtual void Info(string logger, string message, Exception exception)
         {
             if (!this.IsInfoEnabled)
             {
@@ -400,8 +382,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="format">A composite format string.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        [NonEvent]
-        public void Info(string logger, string format, params object[] args)
+        public virtual void Info(string logger, string format, params object[] args)
         {
             if (!this.IsInfoEnabled || format == null || args == null)
             {
@@ -425,19 +406,17 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="message">The message to be logged.</param>
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
-        /// <param name="exceptionString">The string representation of the exception to be logged. This includes the stack trace.</param>
-        [PublicAPI]
-        [Event(13, Level = EventLevel.Informational, Channel = EventChannel.Operational, Message = "{0} : {1} : {2} : {3} : {4}")]
-        public void InfoException(
+        /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        public virtual void InfoException(
             string logger,
             string message,
             string exceptionType,
             string exceptionMessage,
-            string exceptionString)
+            string exceptionValue)
         {
             if (this.IsInfoEnabled)
             {
-                this.WriteEvent(13, logger, message, exceptionType, exceptionMessage, exceptionString);
+                this.WriteEvent(EventId.InfoException, logger, message, exceptionType, exceptionMessage, exceptionValue);
             }
         }
 
@@ -446,12 +425,11 @@ namespace NServiceBus.EventSourceLogging
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
-        [Event(4, Level = EventLevel.Warning, Channel = EventChannel.Operational, Message = "{0} : {1}")]
-        public void Warn(string logger, string message)
+        public virtual void Warn(string logger, string message)
         {
             if (this.IsWarnEnabled)
             {
-                this.WriteEvent(4, logger, message);
+                this.WriteEvent(EventId.Warn, logger, message);
             }
         }
 
@@ -461,8 +439,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
         /// <param name="exception">The exception to be logged.</param>
-        [NonEvent]
-        public void Warn(string logger, string message, Exception exception)
+        public virtual void Warn(string logger, string message, Exception exception)
         {
             if (!this.IsWarnEnabled)
             {
@@ -490,8 +467,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="format">A composite format string.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        [NonEvent]
-        public void Warn(string logger, string format, params object[] args)
+        public virtual void Warn(string logger, string format, params object[] args)
         {
             if (!this.IsWarnEnabled || format == null || args == null)
             {
@@ -515,19 +491,17 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="message">The message to be logged.</param>
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
-        /// <param name="exceptionString">The string representation of the exception to be logged. This includes the stack trace.</param>
-        [PublicAPI]
-        [Event(14, Level = EventLevel.Warning, Channel = EventChannel.Operational, Message = "{0} : {1} : {2} : {3} : {4}")]
-        public void WarnException(
+        /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        public virtual void WarnException(
             string logger,
             string message,
             string exceptionType,
             string exceptionMessage,
-            string exceptionString)
+            string exceptionValue)
         {
             if (this.IsWarnEnabled)
             {
-                this.WriteEvent(14, logger, message, exceptionType, exceptionMessage, exceptionString);
+                this.WriteEvent(EventId.WarnException, logger, message, exceptionType, exceptionMessage, exceptionValue);
             }
         }
 
@@ -606,6 +580,62 @@ namespace NServiceBus.EventSourceLogging
                     }
                 }
             }
+        }
+
+        /// <summary>
+        ///     Supplies event ids.
+        /// </summary>
+        protected static class EventId
+        {
+            /// <summary>
+            ///     The Debug event id.
+            /// </summary>
+            public const int Debug = 1;
+
+            /// <summary>
+            ///     The DebugException event id.
+            /// </summary>
+            public const int DebugException = 2;
+
+            /// <summary>
+            ///     The Error event id.
+            /// </summary>
+            public const int Error = 3;
+
+            /// <summary>
+            ///     The ErrorException event id.
+            /// </summary>
+            public const int ErrorException = 4;
+
+            /// <summary>
+            ///     The Fatal event id.
+            /// </summary>
+            public const int Fatal = 5;
+
+            /// <summary>
+            ///     The FatalException event id.
+            /// </summary>
+            public const int FatalException = 6;
+
+            /// <summary>
+            ///     The Info event id.
+            /// </summary>
+            public const int Info = 7;
+
+            /// <summary>
+            ///     The InfoException event id.
+            /// </summary>
+            public const int InfoException = 8;
+
+            /// <summary>
+            ///     The Warn event id.
+            /// </summary>
+            public const int Warn = 9;
+
+            /// <summary>
+            ///     The WarnException event id.
+            /// </summary>
+            public const int WarnException = 10;
         }
     }
 }

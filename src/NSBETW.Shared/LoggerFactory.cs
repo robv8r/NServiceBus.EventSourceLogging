@@ -31,7 +31,9 @@ namespace NServiceBus.EventSourceLogging
     /// <summary>
     ///     Redirects Logging to ETW.
     /// </summary>
-    public class LoggerFactory : ILoggerFactory
+    /// <typeparam name="T">The type of <see cref="IEventSourceLogger"/> to log to.</typeparam>
+    public class LoggerFactory<T> : ILoggerFactory
+        where T : IEventSourceLogger, new()
     {
         /// <summary>
         ///     Gets a <see cref="ILog" /> for a specific <paramref name="type" />.
@@ -45,7 +47,10 @@ namespace NServiceBus.EventSourceLogging
                 throw new ArgumentNullException(nameof(type));
             }
 
-            return new Logger(type.FullName);
+            var t = new T();
+            var log = t.Log;
+
+            return new Logger(log, type.FullName);
         }
 
         /// <summary>
@@ -60,7 +65,7 @@ namespace NServiceBus.EventSourceLogging
                 throw new ArgumentNullException(nameof(name));
             }
 
-            return new Logger(name);
+            return new Logger(new T().Log, name);
         }
     }
 }

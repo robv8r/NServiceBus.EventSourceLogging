@@ -31,13 +31,17 @@ namespace NServiceBus.EventSourceLogging
     /// <summary>
     ///     Defines an Event Source Logging Factory.
     /// </summary>
+    /// <typeparam name="T">
+    ///     The type of <see cref="IEventSourceLogger"/> to use.
+    /// </typeparam>
     [PublicAPI]
-    public class EventSourceLoggingFactory : LoggingFactoryDefinition
+    public class EventSourceLoggingFactory<T> : LoggingFactoryDefinition
+        where T : IEventSourceLogger, new()
     {
         /// <summary>
-        ///     Singleton instance of the <see cref="EventSourceLoggingFactory" />.
+        ///     Singleton instance of a <see cref="LoggerFactory{T}" />.
         /// </summary>
-        private static readonly ILoggerFactory Factory = new LoggerFactory();
+        private static readonly ILoggerFactory Factory = new LoggerFactory<T>();
 
         /// <summary>
         ///     Constructs an instance of <see cref="ILoggerFactory" /> for use by

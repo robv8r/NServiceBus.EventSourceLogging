@@ -26,15 +26,39 @@
 namespace NServiceBus.EventSourceLogging
 {
     using System;
+    using JetBrains.Annotations;
     using NServiceBus.Logging;
 
     /// <summary>
     ///     Redirects Logging to ETW.
     /// </summary>
-    /// <typeparam name="T">The type of <see cref="IEventSourceLogger"/> to log to.</typeparam>
-    public class LoggerFactory<T> : ILoggerFactory
-        where T : IEventSourceLogger, new()
+    public class LoggerFactory : ILoggerFactory
     {
+        [NotNull]
+        private readonly IEventSourceLogger logger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerFactory"/> class.
+        /// </summary>
+        public LoggerFactory()
+        {
+            this.logger = EventSourceLogger.Log;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerFactory"/> class with the given <paramref name="logger"/>.
+        /// </summary>
+        /// <param name="logger">The logger to use.</param>
+        public LoggerFactory([NotNull] IEventSourceLogger logger)
+        {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            this.logger = logger;
+        }
+
         /// <summary>
         ///     Gets a <see cref="ILog" /> for a specific <paramref name="type" />.
         /// </summary>
@@ -47,10 +71,7 @@ namespace NServiceBus.EventSourceLogging
                 throw new ArgumentNullException(nameof(type));
             }
 
-            var t = new T();
-            var log = t.Log;
-
-            return new Logger(log, type.FullName);
+            return new Logger(this.logger, type.FullName);
         }
 
         /// <summary>
@@ -65,7 +86,7 @@ namespace NServiceBus.EventSourceLogging
                 throw new ArgumentNullException(nameof(name));
             }
 
-            return new Logger(new T().Log, name);
+            return new Logger(this.logger, name);
         }
     }
 }

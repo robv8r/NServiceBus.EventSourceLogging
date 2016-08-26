@@ -36,7 +36,9 @@ namespace NServiceBus.EventSourceLogging
     ///     Creates ETW events for NServiceBus that write to a custom Event Log.
     /// </summary>
     [PublicAPI]
-    [EventSource(Name = "NServiceBus-Logging")]
+    [EventSource(
+        Name = "NServiceBus-EventSourceLogging",
+        LocalizationResources = "NServiceBus.EventSourceLogging.Properties.Resources")]
     public sealed class EventSourceLogger : EventSourceLoggerBase
     {
         private static readonly EventSourceLogger SingletonLog = new EventSourceLogger();
@@ -45,18 +47,31 @@ namespace NServiceBus.EventSourceLogging
         {
         }
 
-        /// <inheritdoc />
-        public override IEventSourceLogger Log => SingletonLog;
+        /// <summary>
+        ///     Gets an instance of an <see cref="IEventSourceLogger" />.
+        /// </summary>
+        public static IEventSourceLogger Log => SingletonLog;
 
-        /// <inheritdoc />
-        [Event(EventId.Debug, Level = EventLevel.Verbose, Message = "{0} : {1}")]
+        /// <summary>
+        ///     If Debug level logging is enabled, writes an event with the given parameters.
+        /// </summary>
+        /// <param name="logger">The name of the logger performing the logging.</param>
+        /// <param name="message">The message to be logged.</param>
+        [Event(1, Level = EventLevel.Verbose)]
         public override void Debug(string logger, string message)
         {
             base.Debug(logger, message);
         }
 
-        /// <inheritdoc />
-        [Event(EventId.DebugException, Level = EventLevel.Verbose, Message = "{0} : {1} : {2} : {3} : {4}")]
+        /// <summary>
+        ///     If Debug level logging is enabled, writes an event with the given parameters.
+        /// </summary>
+        /// <param name="logger">The name of the logger performing the logging.</param>
+        /// <param name="message">The message to be logged.</param>
+        /// <param name="exceptionType">The exception type to be logged.</param>
+        /// <param name="exceptionMessage">The exception message to be logged.</param>
+        /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        [Event(2, Level = EventLevel.Verbose)]
         public override void DebugException(
             string logger,
             string message,
@@ -67,15 +82,26 @@ namespace NServiceBus.EventSourceLogging
             base.DebugException(logger, message, exceptionType, exceptionMessage, exceptionValue);
         }
 
-        /// <inheritdoc />
-        [Event(EventId.Error, Level = EventLevel.Error, Message = "{0} : {1}")]
+        /// <summary>
+        ///     If Error level logging is enabled, writes an event with the given parameters.
+        /// </summary>
+        /// <param name="logger">The name of the logger performing the logging.</param>
+        /// <param name="message">The message to be logged.</param>
+        [Event(3, Level = EventLevel.Error)]
         public override void Error(string logger, string message)
         {
             base.Error(logger, message);
         }
 
-        /// <inheritdoc />
-        [Event(EventId.ErrorException, Level = EventLevel.Error, Message = "{0} : {1} : {2} : {3} : {4}")]
+        /// <summary>
+        ///     If Error level logging is enabled, writes an event with the given parameters.
+        /// </summary>
+        /// <param name="logger">The name of the logger performing the logging.</param>
+        /// <param name="message">The message to be logged.</param>
+        /// <param name="exceptionType">The exception type to be logged.</param>
+        /// <param name="exceptionMessage">The exception message to be logged.</param>
+        /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        [Event(4, Level = EventLevel.Error)]
         public override void ErrorException(
             string logger,
             string message,
@@ -86,15 +112,26 @@ namespace NServiceBus.EventSourceLogging
             base.ErrorException(logger, message, exceptionType, exceptionMessage, exceptionValue);
         }
 
-        /// <inheritdoc />
-        [Event(EventId.Fatal, Level = EventLevel.Critical, Message = "{0} : {1}")]
+        /// <summary>
+        ///     If Fatal level logging is enabled, writes an event with the given parameters.
+        /// </summary>
+        /// <param name="logger">The name of the logger performing the logging.</param>
+        /// <param name="message">The message to be logged.</param>
+        [Event(5, Level = EventLevel.Critical)]
         public override void Fatal(string logger, string message)
         {
             base.Fatal(logger, message);
         }
 
-        /// <inheritdoc />
-        [Event(EventId.FatalException, Level = EventLevel.Critical, Message = "{0} : {1} : {2} : {3} : {4}")]
+        /// <summary>
+        ///     If Fatal level logging is enabled, writes an event with the given parameters.
+        /// </summary>
+        /// <param name="logger">The name of the logger performing the logging.</param>
+        /// <param name="message">The message to be logged.</param>
+        /// <param name="exceptionType">The exception type to be logged.</param>
+        /// <param name="exceptionMessage">The exception message to be logged.</param>
+        /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        [Event(6, Level = EventLevel.Critical)]
         public override void FatalException(
             string logger,
             string message,
@@ -105,15 +142,26 @@ namespace NServiceBus.EventSourceLogging
             base.FatalException(logger, message, exceptionType, exceptionMessage, exceptionValue);
         }
 
-        /// <inheritdoc />
-        [Event(EventId.Info, Level = EventLevel.Informational, Message = "{0} : {1}")]
+        /// <summary>
+        ///     If Informational level logging is enabled, writes an event with the given parameters.
+        /// </summary>
+        /// <param name="logger">The name of the logger performing the logging.</param>
+        /// <param name="message">The message to be logged.</param>
+        [Event(7, Level = EventLevel.Informational)]
         public override void Info(string logger, string message)
         {
             base.Info(logger, message);
         }
 
-        /// <inheritdoc />
-        [Event(EventId.InfoException, Level = EventLevel.Informational, Message = "{0} : {1} : {2} : {3} : {4}")]
+        /// <summary>
+        ///     If Informational level logging is enabled, writes an event with the given parameters.
+        /// </summary>
+        /// <param name="logger">The name of the logger performing the logging.</param>
+        /// <param name="message">The message to be logged.</param>
+        /// <param name="exceptionType">The exception type to be logged.</param>
+        /// <param name="exceptionMessage">The exception message to be logged.</param>
+        /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        [Event(8, Level = EventLevel.Informational)]
         public override void InfoException(
             string logger,
             string message,
@@ -124,15 +172,26 @@ namespace NServiceBus.EventSourceLogging
             base.InfoException(logger, message, exceptionType, exceptionMessage, exceptionValue);
         }
 
-        /// <inheritdoc />
-        [Event(EventId.Warn, Level = EventLevel.Warning, Message = "{0} : {1}")]
+        /// <summary>
+        ///     If Warning level logging is enabled, writes an event with the given parameters.
+        /// </summary>
+        /// <param name="logger">The name of the logger performing the logging.</param>
+        /// <param name="message">The message to be logged.</param>
+        [Event(9, Level = EventLevel.Warning)]
         public override void Warn(string logger, string message)
         {
             base.Warn(logger, message);
         }
 
-        /// <inheritdoc />
-        [Event(EventId.WarnException, Level = EventLevel.Warning, Message = "{0} : {1} : {2} : {3} : {4}")]
+        /// <summary>
+        ///     If Warning level logging is enabled, writes an event with the given parameters.
+        /// </summary>
+        /// <param name="logger">The name of the logger performing the logging.</param>
+        /// <param name="message">The message to be logged.</param>
+        /// <param name="exceptionType">The exception type to be logged.</param>
+        /// <param name="exceptionMessage">The exception message to be logged.</param>
+        /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        [Event(10, Level = EventLevel.Warning)]
         public override void WarnException(
             string logger,
             string message,

@@ -25,34 +25,42 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NServiceBus.EventSourceLogging
 {
+    using System;
     using JetBrains.Annotations;
     using NServiceBus.Logging;
 
     /// <summary>
     ///     Defines an Event Source Logging Factory.
     /// </summary>
-    /// <typeparam name="T">
-    ///     The type of <see cref="IEventSourceLogger"/> to use.
-    /// </typeparam>
     [PublicAPI]
-    public class EventSourceLoggingFactory<T> : LoggingFactoryDefinition
-        where T : IEventSourceLogger, new()
+    public class EventSourceLoggingFactory : LoggingFactoryDefinition
     {
+        private ILoggerFactory loggerFactory = new LoggerFactory(EventSourceLogger.Log);
+
         /// <summary>
-        ///     Singleton instance of a <see cref="LoggerFactory{T}" />.
+        ///     Specifies an instance of <see cref="IEventSourceLogger"/> to use. If not specified then the default is <see cref="EventSourceLogger"/>.
         /// </summary>
-        private static readonly ILoggerFactory Factory = new LoggerFactory<T>();
+        /// <param name="logger">The logger to use.</param>
+        public void WithLogger([NotNull] IEventSourceLogger logger)
+        {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            this.loggerFactory = new LoggerFactory(logger);
+        }
 
         /// <summary>
         ///     Constructs an instance of <see cref="ILoggerFactory" /> for use by
-        ///     <see cref="M:NServiceBus.Logging.LogManager.Use``1" />
+        ///     <see cref="M:NServiceBus.Logging.LogManager.Use{T}" />
         /// </summary>
         /// <returns>
         ///     A logging factory.
         /// </returns>
         protected override ILoggerFactory GetLoggingFactory()
         {
-            return Factory;
+            return this.loggerFactory;
         }
     }
 }

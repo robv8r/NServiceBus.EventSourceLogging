@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+    <metadata>
+        <id>NServiceBus.EventSourceLogging</id>
+        <version>1.0.0-beta01</version>
+        <title>NServiceBus.EventSourceLogging</title>
+        <authors>Rob Winningham</authors>
+        <owners>Rob Winningham</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>https://github.com/robv8r/NServiceBus.EventSourceLogging/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/robv8r/NServiceBus.EventSourceLogging</projectUrl>
+        <iconUrl>https://github.com/robv8r/NServiceBus.EventSourceLogging/blob/master/icons/package_icon.png</iconUrl>
+        <description>ETW logging for NServiceBus</description>
+        <copyright>Copyright (c) Rob Winningham 2016</copyright>
+        <tags>NServiceBus Logging ETW EventSource</tags>
+        <dependencies>
+            <group>
+                <dependency id="NServiceBus" version="5.0.0" />
+            </group>
+            <group targetFramework="net45">
+                <dependency id="Microsoft.Diagnostics.Tracing.EventSource" version="1.1.28" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.Net45.dll" target="lib\net45" /> 
+        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.Net45.*.etwManifest.dll" target="lib\net45" /> 
+        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.Net45.*.man" target="lib\net45" /> 
+        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.Net45.pdb" target="lib\net45" /> 
+        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.Net45.xml" target="lib\net45" /> 
+        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.Net46.dll" target="lib\net46" /> 
+        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.Net46.*.etwManifest.dll" target="lib\net46" /> 
+        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.Net46.*.man" target="lib\net46" /> 
+        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.Net46.pdb" target="lib\net46" /> 
+        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.Net46.xml" target="lib\net46" /> 
+    </files>
+</package>

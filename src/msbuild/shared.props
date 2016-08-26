@@ -3,7 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NServiceBus.EventSourceLogging</RootNamespace>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -28,7 +27,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>../msbuild/IdentityPubKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)IdentityPubKey.snk</AssemblyOriginatorKeyFile>
     <DelaySign>true</DelaySign>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+  </ItemGroup>
 </Project>

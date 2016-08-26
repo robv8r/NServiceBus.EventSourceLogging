@@ -30,18 +30,4 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("NServiceBus.EventSourceLogging")]
 [assembly: AssemblyDescription("ETW integration for NServiceBus")]
-[assembly: AssemblyCompany("Rob Winningham")]
 [assembly: AssemblyProduct("NServiceBus.EventSourceLogging")]
-[assembly: AssemblyCopyright("Copyright © Rob Winningham 2016")]
-[assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguage("en")]
-[assembly: CLSCompliant(true)]
-[assembly: ComVisible(false)]
-[assembly: Guid("4bc5c594-e1ac-484c-a819-cf7b0bbd30e1")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0.0")]
-
-#if DEBUG
-[assembly: AssemblyConfiguration("DEBUG")]
-#endif

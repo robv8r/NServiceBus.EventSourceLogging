@@ -74,15 +74,6 @@ namespace NServiceBus.EventSourceLogging
         }
 
         /// <summary>
-        ///     Gets an instance of an <see cref="IEventSourceLogger" />.
-        /// </summary>
-        [NotNull]
-        IEventSourceLogger Log
-        {
-            get;
-        }
-
-        /// <summary>
         ///     If Debug level logging is enabled, writes an event with the given parameters.
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>

@@ -160,8 +160,6 @@ namespace NServiceBus.EventSourceLogging
                             case "name":
                                 name = attribute.Value;
                                 break;
-                            default:
-                                break;
                         }
                     }
 
@@ -240,8 +238,6 @@ namespace NServiceBus.EventSourceLogging
                         case "symbol":
                             symbol = attribute.Value;
                             break;
-                        default:
-                            break;
                     }
                 }
 
@@ -312,8 +308,6 @@ namespace NServiceBus.EventSourceLogging
                         this.warnExceptionLevel = level;
                         this.warnExceptionKeywords = keywords;
                         break;
-                    default:
-                        break;
                 }
             }
         }
@@ -331,7 +325,7 @@ namespace NServiceBus.EventSourceLogging
         /// <summary>
         ///     Gets a value indicating whether Fatal level logging is enabled.
         /// </summary>
-        public bool IsFatalEnabled => this.IsFatalEventEnabled || this.IsErrorExceptionEventEnabled;
+        public bool IsFatalEnabled => this.IsFatalEventEnabled || this.IsFatalExceptionEventEnabled;
 
         /// <summary>
         ///     Gets a value indicating whether Informational level logging is enabled.
@@ -346,41 +340,48 @@ namespace NServiceBus.EventSourceLogging
         /// <summary>
         ///     Gets a value indicating whether the Debug event is enabled.
         /// </summary>
+        [PublicAPI]
         protected bool IsDebugEventEnabled => this.IsEnabled(this.debugLevel, this.debugKeywords, this.debugChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the DebugException event is enabled.
         /// </summary>
+        [PublicAPI]
         protected bool IsDebugExceptionEventEnabled =>
             this.IsEnabled(this.debugExceptionLevel, this.debugExceptionKeywords, this.debugExceptionChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the Error event is enabled.
         /// </summary>
+        [PublicAPI]
         protected bool IsErrorEventEnabled =>
             this.IsEnabled(this.errorLevel, this.errorKeywords, this.errorChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the ErrorException event is enabled.
         /// </summary>
+        [PublicAPI]
         protected bool IsErrorExceptionEventEnabled =>
             this.IsEnabled(this.errorExceptionLevel, this.errorExceptionKeywords, this.errorExceptionChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the Fatal event is enabled.
         /// </summary>
+        [PublicAPI]
         protected bool IsFatalEventEnabled =>
             this.IsEnabled(this.fatalLevel, this.fatalKeywords, this.fatalChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the FatalException event is enabled.
         /// </summary>
+        [PublicAPI]
         protected bool IsFatalExceptionEventEnabled =>
             this.IsEnabled(this.fatalExceptionLevel, this.fatalExceptionKeywords, this.fatalExceptionChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the Info event is enabled.
         /// </summary>
+        [PublicAPI]
         protected bool IsInfoEventEnabled =>
             this.IsEnabled(this.infoLevel, this.infoKeywords, this.infoChannel);
 

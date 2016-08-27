@@ -151,11 +151,29 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} {1} Keywords:({2}) {3} {4} {5}.
+        /// </summary>
+        internal static string EventTraceOutput {
+            get {
+                return ResourceManager.GetString("EventTraceOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attempted to log a message with an invalid format: .
         /// </summary>
         internal static string InvalidFormatErrorString {
             get {
                 return ResourceManager.GetString("InvalidFormatErrorString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press any key to stop program.
+        /// </summary>
+        internal static string PressAnyKeyToStopProgram {
+            get {
+                return ResourceManager.GetString("PressAnyKeyToStopProgram", resourceCulture);
             }
         }
     }

@@ -27,35 +27,56 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
 {
     using System;
     using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Tracing;
+    using JetBrains.Annotations;
+    using NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties;
     using NServiceBus.Logging;
 
     /// <summary>
     ///     Application host.
     /// </summary>
-    [SuppressMessage(
-         "ReSharper",
-         "ClassNeverInstantiated.Global",
-         Justification = "Entry point into application.")]
+    [UsedImplicitly]
     internal class Program
     {
         /// <summary>
         ///     Entry point into application.
         /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         This example uses an EventListener to output ETW events to the
+        ///         <see cref="Console" />.
+        ///     </para>
+        ///     <para>
+        ///         Normally, you would NOT do this.
+        ///     </para>
+        ///     <para>
+        ///         Instead, you'd consume the events using an existing tool such
+        ///         as PerfView, Microsoft Message Analyzer, Event Log Viewer,
+        ///         or logmon.
+        ///     </para>
+        /// </remarks>
         private static void Main()
         {
             using (var listener = new CustomEventSourceListener())
             {
-                listener.EnableEvents(CustomEventLogEventSource.Log, EventLevel.Warning);
+                listener.EnableEvents(CustomEventLogEventSource.Log, EventLevel.Informational);
 
                 // Configure Logger
                 var logManager = LogManager.Use<EventSourceLoggingFactory>();
-                Debug.Assert(logManager != null, "logManager != null");
+
+                if (logManager == null)
+                {
+                    throw new InvalidOperationException("Logger is null.");
+                }
+
                 logManager.WithLogger(CustomEventLogEventSource.Log);
 
                 var logger = LogManager.GetLogger("Example");
-                Debug.Assert(logger != null, "logger != null");
+
+                if (logger == null)
+                {
+                    throw new InvalidOperationException("Logger is null.");
+                }
 
                 logger.DebugFormat("{0}", "My Debug Message");
                 logger.InfoFormat("{0}", "My Info Message");
@@ -73,7 +94,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
                 {
                     Debug.Assert(bus != null, "bus != null");
                     bus.Start();
-                    Console.WriteLine(@"Press any key to stop program");
+                    Console.WriteLine(Resources.PressAnyKeyToStopProgram);
                     Console.Read();
                 }
             }

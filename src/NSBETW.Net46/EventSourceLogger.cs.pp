@@ -23,21 +23,24 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace NServiceBus.EventSourceLogging
+namespace $rootnamespace$
 {
-    using JetBrains.Annotations;
-#if USEMDT
-    using Microsoft.Diagnostics.Tracing;
-#else
     using System.Diagnostics.Tracing;
-#endif
 
     /// <summary>
-    ///     Creates ETW events for NServiceBus that write to a custom Event Log.
+    ///     Creates ETW events for NServiceBus.
     /// </summary>
-    [PublicAPI]
+    /// <remarks>
+    ///     <para>
+    ///         TODO: Replace the EventSource Name "NServiceBus" with something specific to your application
+    ///     </para>
+    ///     <para>
+    ///         See <see href="https://github.com/Microsoft/dotnetsamples/blob/master/Microsoft.Diagnostics.Tracing/EventSource/docs/EventSource.md"/>
+    ///         for more information about naming Event Sources.
+    ///     </para>
+    /// </remarks>
     [EventSource(
-        Name = "NServiceBus-EventSourceLogging",
+        Name = "NServiceBus",
         LocalizationResources = "NServiceBus.EventSourceLogging.Properties.Resources")]
     public sealed class EventSourceLogger : EventSourceLoggerBase
     {

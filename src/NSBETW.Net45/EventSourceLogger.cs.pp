@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CustomEventLogEventSource.cs" company="Rob Winningham">
+// <copyright file="EventSourceLogger.cs" company="Rob Winningham">
 //   MIT License
 //
 //   Copyright (c) 2016 Rob Winningham
@@ -23,34 +23,44 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
+namespace $rootnamespace$
 {
-    using JetBrains.Annotations;
     using Microsoft.Diagnostics.Tracing;
-    using NServiceBus.EventSourceLogging;
 
     /// <summary>
-    ///     Creates ETW events for NServiceBus that write to a custom Event Log.
+    ///     Creates ETW events for NServiceBus.
     /// </summary>
-    [PublicAPI]
-    [EventSource(Name = "NServiceBus-Samples-CustomEventLogEventSourceLoggingNet46", LocalizationResources = "NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties.Resources")]
-    public sealed class CustomEventLogEventSource : EventSourceLoggerBase
+    /// <remarks>
+    ///     <para>
+    ///         TODO: Replace the EventSource Name "NServiceBus" with something specific to your application
+    ///     </para>
+    ///     <para>
+    ///         See <see href="https://github.com/Microsoft/dotnetsamples/blob/master/Microsoft.Diagnostics.Tracing/EventSource/docs/EventSource.md"/>
+    ///	        for more information about naming Event Sources.
+    ///     </para>
+    /// </remarks>
+    [EventSource(
+        Name = "NServiceBus",
+        LocalizationResources = "NServiceBus.EventSourceLogging.Properties.Resources")]
+    public sealed class EventSourceLogger : EventSourceLoggerBase
     {
-        private CustomEventLogEventSource()
+        private static readonly EventSourceLogger SingletonLog = new EventSourceLogger();
+
+        private EventSourceLogger()
         {
         }
 
         /// <summary>
-        ///     Gets an instance of an <see cref="CustomEventLogEventSource" />.
+        ///     Gets an instance of an <see cref="IEventSourceLogger" />.
         /// </summary>
-        public static CustomEventLogEventSource Log { get; } = new CustomEventLogEventSource();
+        public static IEventSourceLogger Log => SingletonLog;
 
         /// <summary>
         ///     If Debug level logging is enabled, writes an event with the given parameters.
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
-        [Event(9, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Keywords = Keywords.Debug)]
+        [Event(1, Level = EventLevel.Verbose)]
         public override void Debug(string logger, string message)
         {
             base.Debug(logger, message);
@@ -64,7 +74,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
         /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
-        [Event(10, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Keywords = Keywords.Debug | Keywords.ExceptionData)]
+        [Event(2, Level = EventLevel.Verbose)]
         public override void DebugException(
             string logger,
             string message,
@@ -80,7 +90,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
-        [Event(3, Level = EventLevel.Error, Channel = EventChannel.Operational, Keywords = Keywords.Error)]
+        [Event(3, Level = EventLevel.Error)]
         public override void Error(string logger, string message)
         {
             base.Error(logger, message);
@@ -94,7 +104,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
         /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
-        [Event(4, Level = EventLevel.Error, Channel = EventChannel.Operational, Keywords = Keywords.Error | Keywords.ExceptionData)]
+        [Event(4, Level = EventLevel.Error)]
         public override void ErrorException(
             string logger,
             string message,
@@ -110,7 +120,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
-        [Event(11, Level = EventLevel.Critical, Channel = EventChannel.Operational, Keywords = Keywords.Critical)]
+        [Event(5, Level = EventLevel.Critical)]
         public override void Fatal(string logger, string message)
         {
             base.Fatal(logger, message);
@@ -124,7 +134,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
         /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
-        [Event(2, Level = EventLevel.Critical, Channel = EventChannel.Operational, Keywords = Keywords.Critical | Keywords.ExceptionData)]
+        [Event(6, Level = EventLevel.Critical)]
         public override void FatalException(
             string logger,
             string message,
@@ -140,7 +150,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
-        [Event(7, Level = EventLevel.Informational, Channel = EventChannel.Operational, Keywords = Keywords.Informational)]
+        [Event(7, Level = EventLevel.Informational)]
         public override void Info(string logger, string message)
         {
             base.Info(logger, message);
@@ -154,7 +164,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
         /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
-        [Event(8, Level = EventLevel.Informational, Channel = EventChannel.Operational, Keywords = Keywords.Informational | Keywords.ExceptionData)]
+        [Event(8, Level = EventLevel.Informational)]
         public override void InfoException(
             string logger,
             string message,
@@ -170,7 +180,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// </summary>
         /// <param name="logger">The name of the logger performing the logging.</param>
         /// <param name="message">The message to be logged.</param>
-        [Event(5, Level = EventLevel.Warning, Channel = EventChannel.Operational, Keywords = Keywords.Warning)]
+        [Event(9, Level = EventLevel.Warning)]
         public override void Warn(string logger, string message)
         {
             base.Warn(logger, message);
@@ -184,7 +194,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
         /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
-        [Event(6, Level = EventLevel.Warning, Channel = EventChannel.Operational, Keywords = Keywords.Warning | Keywords.ExceptionData)]
+        [Event(10, Level = EventLevel.Warning)]
         public override void WarnException(
             string logger,
             string message,
@@ -193,42 +203,6 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
             string exceptionValue)
         {
             base.WarnException(logger, message, exceptionType, exceptionMessage, exceptionValue);
-        }
-
-        /// <summary>
-        ///     Contains constants that can be used to create a bit-vector that represent <see cref="EventKeywords"/>.
-        /// </summary>
-        public class Keywords
-        {
-            /// <summary>
-            ///     Indicates whether an event contains information about an <see cref="System.Exception"/>.
-            /// </summary>
-            public const EventKeywords ExceptionData = (EventKeywords)0x0001;
-
-            /// <summary>
-            ///     Indicates whether an event contains Debug information.
-            /// </summary>
-            public const EventKeywords Debug = (EventKeywords)0x0002;
-
-            /// <summary>
-            ///     Indicates whether an event contains Warning information.
-            /// </summary>
-            public const EventKeywords Warning = (EventKeywords)0x0004;
-
-            /// <summary>
-            ///     Indicates whether an event contains Informational information.
-            /// </summary>
-            public const EventKeywords Informational = (EventKeywords)0x0008;
-
-            /// <summary>
-            ///     Indicates whether an event contains Critical information.
-            /// </summary>
-            public const EventKeywords Critical = (EventKeywords)0x0010;
-
-            /// <summary>
-            ///     Indicates whether an event contains Error information.
-            /// </summary>
-            public const EventKeywords Error = (EventKeywords)0x0020;
         }
     }
 }

@@ -9,8 +9,6 @@
     <Import_RootNamespace>NServiceBus.EventSourceLogging</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)EventSourceLogger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)EventLogEventSourceLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventSourceLoggerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventSourceLoggingFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEventSourceLogger.cs" />
@@ -19,8 +17,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoggerFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
   </ItemGroup>
 </Project>

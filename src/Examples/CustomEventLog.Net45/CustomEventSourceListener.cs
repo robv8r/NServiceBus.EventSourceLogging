@@ -27,10 +27,10 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Tracing;
     using System.Globalization;
     using System.Linq;
     using JetBrains.Annotations;
+    using Microsoft.Diagnostics.Tracing;
     using NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties;
 
     /// <summary>

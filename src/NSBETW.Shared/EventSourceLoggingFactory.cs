@@ -35,10 +35,10 @@ namespace NServiceBus.EventSourceLogging
     [PublicAPI]
     public class EventSourceLoggingFactory : LoggingFactoryDefinition
     {
-        private ILoggerFactory loggerFactory = new LoggerFactory(EventSourceLogger.Log);
+        private ILoggerFactory loggerFactory;
 
         /// <summary>
-        ///     Specifies an instance of <see cref="IEventSourceLogger"/> to use. If not specified then the default is <see cref="EventSourceLogger"/>.
+        ///     Specifies an instance of <see cref="IEventSourceLogger"/> to use.
         /// </summary>
         /// <param name="logger">The logger to use.</param>
         public void WithLogger([NotNull] IEventSourceLogger logger)

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NServiceBus.EventSourceLogging {
+namespace NServiceBus.EventSourceLogging.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace NServiceBus.EventSourceLogging {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NServiceBus.EventSourceLogging.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NServiceBus.EventSourceLogging.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace NServiceBus.EventSourceLogging {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attempted to log a message with an invalid format: .
+        ///   Looks up a localized string similar to Attempted to log a message with an invalid format:.
         /// </summary>
         internal static string InvalidFormatErrorString {
             get {

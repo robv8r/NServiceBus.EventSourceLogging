@@ -38,14 +38,6 @@ namespace NServiceBus.EventSourceLogging
         private readonly IEventSourceLogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoggerFactory"/> class.
-        /// </summary>
-        public LoggerFactory()
-        {
-            this.logger = EventSourceLogger.Log;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="LoggerFactory"/> class with the given <paramref name="logger"/>.
         /// </summary>
         /// <param name="logger">The logger to use.</param>

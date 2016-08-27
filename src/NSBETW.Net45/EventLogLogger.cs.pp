@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EventLogEventSourceLogger.cs" company="Rob Winningham">
+// <copyright file="EventLogLogger.cs" company="Rob Winningham">
 //   MIT License
 //
 //   Copyright (c) 2016 Rob Winningham
@@ -23,30 +23,35 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace NServiceBus.EventSourceLogging
+namespace $rootnamespace$
 {
-    using JetBrains.Annotations;
-#if USEMDT
     using Microsoft.Diagnostics.Tracing;
-#else
-    using System.Diagnostics.Tracing;
-#endif
 
     /// <summary>
     ///     Creates ETW events for NServiceBus that write to a custom Event Log.
     /// </summary>
-    [PublicAPI]
-    [EventSource(Name = "NServiceBus-EventLogEventSourceLogging", LocalizationResources = "NServiceBus.EventSourceLogging.Properties.Resources")]
-    public sealed class EventLogEventSourceLogger : EventSourceLoggerBase
+    /// <remarks>
+    ///     <para>
+    ///         TODO: Replace the EventSource Name "NServiceBus-Application-Logging" with something specific to your application
+    ///     </para>
+    ///     <para>
+    ///	        See <see href="https://github.com/Microsoft/dotnetsamples/blob/master/Microsoft.Diagnostics.Tracing/EventSource/docs/EventSource.md"/>
+    ///         for more information about naming Event Sources.
+    ///     </para>
+    /// </remarks>
+    [EventSource(
+        Name = "NServiceBus-Application-Logging",
+        LocalizationResources = "NServiceBus.EventSourceLogging.Properties.Resources")]
+    public sealed class EventLogLogger : EventSourceLoggerBase
     {
-        private EventLogEventSourceLogger()
+        private EventLogLogger()
         {
         }
 
         /// <summary>
-        ///     Gets an instance of an <see cref="EventLogEventSourceLogger" />.
+        ///     Gets an instance of an <see cref="EventLogLogger" />.
         /// </summary>
-        public static EventLogEventSourceLogger Log { get; } = new EventLogEventSourceLogger();
+        public static EventLogLogger Log { get; } = new EventLogLogger();
 
         /// <summary>
         ///     If Debug level logging is enabled, writes an event with the given parameters.

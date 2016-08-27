@@ -118,42 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="event_Debug" xml:space="preserve">
-    <value>CUSTOM MESSAGE .Net 4.6 {0} : {1}</value>
+    <value>{0} : {1}</value>
   </data>
   <data name="event_DebugException" xml:space="preserve">
-    <value>CUSTOM MESSAGE .Net 4.6 {0} : {1} : {2} : {3} : {4}</value>
+    <value>{0} : {1} : {2} : {3} : {4}</value>
   </data>
   <data name="event_Error" xml:space="preserve">
-    <value>CUSTOM MESSAGE .Net 4.6 {0} : {1}</value>
+    <value>{0} : {1}</value>
   </data>
   <data name="event_ErrorException" xml:space="preserve">
-    <value>CUSTOM MESSAGE .Net 4.6 {0} : {1} : {2} : {3} : {4}</value>
+    <value>{0} : {1} : {2} : {3} : {4}</value>
   </data>
   <data name="event_Fatal" xml:space="preserve">
-    <value>CUSTOM MESSAGE .Net 4.6 {0} : {1}</value>
+    <value>{0} : {1}</value>
   </data>
   <data name="event_FatalException" xml:space="preserve">
-    <value>CUSTOM MESSAGE .Net 4.6 {0} : {1} : {2} : {3} : {4}</value>
+    <value>{0} : {1} : {2} : {3} : {4}</value>
   </data>
   <data name="event_Info" xml:space="preserve">
-    <value>CUSTOM MESSAGE .Net 4.6 {0} : {1}</value>
+    <value>{0} : {1}</value>
   </data>
   <data name="event_InfoException" xml:space="preserve">
-    <value>CUSTOM MESSAGE .Net 4.6 {0} : {1} : {2} : {3} : {4}</value>
+    <value>{0} : {1} : {2} : {3} : {4}</value>
   </data>
   <data name="event_Warn" xml:space="preserve">
-    <value>CUSTOM MESSAGE .Net 4.6 {0} : {1}</value>
+    <value>{0} : {1}</value>
   </data>
   <data name="event_WarnException" xml:space="preserve">
-    <value>CUSTOM MESSAGE .Net 4.6 {0} : {1} : {2} : {3} : {4}</value>
-  </data>
-  <data name="InvalidFormatErrorString" xml:space="preserve">
-    <value>Attempted to log a message with an invalid format: </value>
-  </data>
-  <data name="EventTraceOutput" xml:space="preserve">
-    <value>{0} {1} Keywords:({2}) {3} {4} {5}</value>
-  </data>
-  <data name="PressAnyKeyToStopProgram" xml:space="preserve">
-    <value>Press any key to stop program</value>
+    <value>{0} : {1} : {2} : {3} : {4}</value>
   </data>
 </root>

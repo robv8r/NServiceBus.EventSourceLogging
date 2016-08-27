@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Rob Winningham">
+// <copyright file="SharedAssemblyInfo.cs" company="Rob Winningham">
 //   MIT License
 //
 //   Copyright (c) 2016 Rob Winningham
@@ -35,8 +35,8 @@ using System.Runtime.InteropServices;
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.3.0")]
+[assembly: AssemblyInformationalVersion("1.0.3.0")]
 
 #if DEBUG
 [assembly: AssemblyConfiguration("DEBUG")]

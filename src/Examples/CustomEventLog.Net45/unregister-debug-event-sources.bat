@@ -13,11 +13,11 @@ exit /b 1
 
 set basepath=%~dp0\bin\Debug
 
-set filename=NServiceBus.EventSourceLogging.Samples.CustomEventLog.Net45.NServiceBus-Samples-CustomEventLogEventSourceLoggingNet45.etwManifest
+set filename=NServiceBus.EventSourceLogging.Samples.CustomEventLog.Net45.NServiceBus-Samples-Net45.etwManifest
 set man=%basepath%\%filename%.man
 set dll=%basepath%\%filename%.dll
 
-echo Uninstalling NServiceBus-Samples-CustomEventLogEventSourceLoggingNet45
+echo Uninstalling NServiceBus-Samples-Net45
 wevtutil.exe um "%man%"
 
 pause

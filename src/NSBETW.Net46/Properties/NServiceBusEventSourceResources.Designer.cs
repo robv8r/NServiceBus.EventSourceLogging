@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
+namespace NServiceBus.EventSourceLogging.Properties {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class NServiceBusEventSourceResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal NServiceBusEventSourceResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NServiceBus.EventSourceLogging.Properties.NServiceBusEventSourceResources", typeof(NServiceBusEventSourceResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CUSTOM MESSAGE .Net 4.5 {0} : {1}.
+        ///   Looks up a localized string similar to {0} : {1}.
         /// </summary>
         internal static string event_Debug {
             get {
@@ -70,7 +70,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CUSTOM MESSAGE .Net 4.5 {0} : {1} : {2} : {3} : {4}.
+        ///   Looks up a localized string similar to {0} : {1} : {2} : {3} : {4}.
         /// </summary>
         internal static string event_DebugException {
             get {
@@ -79,7 +79,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CUSTOM MESSAGE .Net 4.5 {0} : {1}.
+        ///   Looks up a localized string similar to {0} : {1}.
         /// </summary>
         internal static string event_Error {
             get {
@@ -88,7 +88,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CUSTOM MESSAGE .Net 4.5 {0} : {1} : {2} : {3} : {4}.
+        ///   Looks up a localized string similar to {0} : {1} : {2} : {3} : {4}.
         /// </summary>
         internal static string event_ErrorException {
             get {
@@ -97,7 +97,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CUSTOM MESSAGE .Net 4.5 {0} : {1}.
+        ///   Looks up a localized string similar to {0} : {1}.
         /// </summary>
         internal static string event_Fatal {
             get {
@@ -106,7 +106,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CUSTOM MESSAGE .Net 4.5 {0} : {1} : {2} : {3} : {4}.
+        ///   Looks up a localized string similar to {0} : {1} : {2} : {3} : {4}.
         /// </summary>
         internal static string event_FatalException {
             get {
@@ -115,7 +115,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CUSTOM MESSAGE .Net 4.5 {0} : {1}.
+        ///   Looks up a localized string similar to {0} : {1}.
         /// </summary>
         internal static string event_Info {
             get {
@@ -124,7 +124,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CUSTOM MESSAGE .Net 4.5 {0} : {1} : {2} : {3} : {4}.
+        ///   Looks up a localized string similar to {0} : {1} : {2} : {3} : {4}.
         /// </summary>
         internal static string event_InfoException {
             get {
@@ -133,7 +133,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CUSTOM MESSAGE .Net 4.5 {0} : {1}.
+        ///   Looks up a localized string similar to {0} : {1}.
         /// </summary>
         internal static string event_Warn {
             get {
@@ -142,29 +142,11 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CUSTOM MESSAGE .Net 4.5 {0} : {1} : {2} : {3} : {4}.
+        ///   Looks up a localized string similar to {0} : {1} : {2} : {3} : {4}.
         /// </summary>
         internal static string event_WarnException {
             get {
                 return ResourceManager.GetString("event_WarnException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} {1} Keywords:({2}) {3} {4} {5}.
-        /// </summary>
-        internal static string EventTraceOutput {
-            get {
-                return ResourceManager.GetString("EventTraceOutput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Press any key to stop program.
-        /// </summary>
-        internal static string PressAnyKeyToStopProgram {
-            get {
-                return ResourceManager.GetString("PressAnyKeyToStopProgram", resourceCulture);
             }
         }
     }

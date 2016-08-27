@@ -35,7 +35,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="NSBETW.Net45.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -23,10 +23,7 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
 using System.Reflection;
-using System.Resources;
-using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("NServiceBus.EventSourceLogging")]
 [assembly: AssemblyDescription("ETW integration for NServiceBus")]

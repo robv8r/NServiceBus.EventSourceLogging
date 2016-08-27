@@ -388,18 +388,21 @@ namespace NServiceBus.EventSourceLogging
         /// <summary>
         ///     Gets a value indicating whether the InfoException event is enabled.
         /// </summary>
+        [PublicAPI]
         protected bool IsInfoExceptionEventEnabled =>
             this.IsEnabled(this.infoExceptionLevel, this.infoExceptionKeywords, this.infoExceptionChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the Warn event is enabled.
         /// </summary>
+        [PublicAPI]
         protected bool IsWarnEventEnabled =>
             this.IsEnabled(this.warnLevel, this.warnKeywords, this.warnChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the WarnException event is enabled.
         /// </summary>
+        [PublicAPI]
         protected bool IsWarnExceptionEventEnabled =>
             this.IsEnabled(this.warnExceptionLevel, this.warnExceptionKeywords, this.warnExceptionChannel);
 

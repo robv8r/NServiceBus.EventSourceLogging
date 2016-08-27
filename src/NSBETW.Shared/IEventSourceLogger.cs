@@ -106,6 +106,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
         /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        [PublicAPI]
         void DebugException(
             string logger,
             string message,
@@ -144,6 +145,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
         /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        [PublicAPI]
         void ErrorException(
             string logger,
             string message,
@@ -182,6 +184,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
         /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        [PublicAPI]
         void FatalException(
             string logger,
             string message,
@@ -220,6 +223,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
         /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        [PublicAPI]
         void InfoException(
             string logger,
             string message,
@@ -258,6 +262,7 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="exceptionType">The exception type to be logged.</param>
         /// <param name="exceptionMessage">The exception message to be logged.</param>
         /// <param name="exceptionValue">The string representation of the exception to be logged. This includes the stack trace.</param>
+        [PublicAPI]
         void WarnException(
             string logger,
             string message,

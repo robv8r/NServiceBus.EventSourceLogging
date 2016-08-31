@@ -42,7 +42,7 @@ namespace $rootnamespace$
     /// </remarks>
     [EventSource(
         Name = "NServiceBus",
-        LocalizationResources = "NServiceBus.EventSourceLogging.Properties.Resources")]
+        LocalizationResources = "$rootnamespace$.NServiceBusEventSourceResources")]
     public sealed class EventSourceLogger : EventSourceLoggerBase
     {
         private static readonly EventSourceLogger SingletonLog = new EventSourceLogger();

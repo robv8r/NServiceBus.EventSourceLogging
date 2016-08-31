@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SharedAssemblyInfo.cs" company="Rob Winningham">
+// <copyright file="AssemblyInfo.cs" company="Rob Winningham">
 //   MIT License
 //
 //   Copyright (c) 2016 Rob Winningham
@@ -23,20 +23,6 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Reflection;
-using System.Resources;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyCompany("Rob Winningham")]
-[assembly: AssemblyCopyright("Copyright © Rob Winningham 2016")]
-[assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguage("en")]
-[assembly: CLSCompliant(true)]
-[assembly: ComVisible(false)]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.4")]
-
-#if DEBUG
-[assembly: AssemblyConfiguration("DEBUG")]
-#endif
+[assembly: Guid("ac4eb268-1989-4322-ba09-12e8cdf78d67")]

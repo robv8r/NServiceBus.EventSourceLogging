@@ -120,4 +120,13 @@
   <data name="InvalidFormatErrorString" xml:space="preserve">
     <value>Attempted to log a message with an invalid format:</value>
   </data>
+  <data name="XmlManifestDidNotContainTheProvidersName" xml:space="preserve">
+    <value>The XML manifest did not contain the provider's name.</value>
+  </data>
+  <data name="XmlManifestDoesNotContainDocumentElement" xml:space="preserve">
+    <value>XML Manifest does not contain a document element.</value>
+  </data>
+  <data name="XmlManifestDoesNotContainNameTable" xml:space="preserve">
+    <value>XML Manifest does not contain a name table.</value>
+  </data>
 </root>

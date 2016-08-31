@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d8e0d1bb-7b4f-4bf9-83c4-b1f33063888d</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NServiceBus.EventSourceLogging.UnitTests</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)EventSourceManifestWithKeywordsTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventSources\ImplicitEventSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventSources\KeywordsEventSource.cs" />
+  </ItemGroup>
+</Project>

@@ -26,6 +26,7 @@
 namespace $rootnamespace$
 {
     using System.Diagnostics.Tracing;
+    using NServiceBus.EventSourceLogging;
 
     /// <summary>
     ///     Creates ETW events for NServiceBus.
@@ -35,7 +36,7 @@ namespace $rootnamespace$
     ///         TODO: Replace the EventSource Name "NServiceBus" with something specific to your application
     ///     </para>
     ///     <para>
-    ///         See <see href="https://github.com/Microsoft/dotnetsamples/blob/master/Microsoft.Diagnostics.Tracing/EventSource/docs/EventSource.md"/>
+    ///         See <see href="https://github.com/Microsoft/dotnetsamples/blob/master/Microsoft.Diagnostics.Tracing/EventSource/docs/EventSource.md#rules-for-defining-eventsource-classes"/>
     ///         for more information about naming Event Sources.
     ///     </para>
     /// </remarks>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CustomEventLogEventSource.cs" company="Rob Winningham">
+// <copyright file="EventSourceLogger.cs" company="Rob Winningham">
 //   MIT License
 //
 //   Copyright (c) 2016 Rob Winningham
@@ -25,25 +25,28 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
 {
-    using System.Diagnostics.Tracing;
+    using System.Diagnostics.CodeAnalysis;
     using JetBrains.Annotations;
+    using Microsoft.Diagnostics.Tracing;
     using NServiceBus.EventSourceLogging;
 
     /// <summary>
     ///     Creates ETW events for NServiceBus that write to a custom Event Log.
     /// </summary>
     [PublicAPI]
-    [EventSource(Name = "NServiceBus-Samples-CustomEventLogEventSourceLoggingNet46", LocalizationResources = "NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties.Resources")]
-    public sealed class CustomEventLogEventSource : EventSourceLoggerBase
+    [EventSource(
+        Name = "NServiceBus-Samples-EventSourceLoggerLoggingNet46",
+        LocalizationResources = "NServiceBus.EventSourceLogging.Samples.CustomEventLog.Properties.Resources")]
+    public sealed class EventSourceLogger : EventSourceLoggerBase
     {
-        private CustomEventLogEventSource()
+        private EventSourceLogger()
         {
         }
 
         /// <summary>
-        ///     Gets an instance of an <see cref="CustomEventLogEventSource" />.
+        ///     Gets an instance of an <see cref="EventSourceLogger" />.
         /// </summary>
-        public static CustomEventLogEventSource Log { get; } = new CustomEventLogEventSource();
+        public static EventSourceLogger Log { get; } = new EventSourceLogger();
 
         /// <summary>
         ///     If Debug level logging is enabled, writes an event with the given parameters.
@@ -198,6 +201,8 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// <summary>
         ///     Contains constants that can be used to create a bit-vector that represent <see cref="EventKeywords"/>.
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "Required for EventSource API.")]
+        [SuppressMessage("Microsoft.Design", "CA1053:StaticHolderTypesShouldNotHaveConstructors", Justification = "Required for EventSource API.")]
         public class Keywords
         {
             /// <summary>

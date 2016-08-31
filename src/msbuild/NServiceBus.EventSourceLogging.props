@@ -2,8 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)\..\tools\NServiceBusEventSourceResources.resx" />
-    <Compile Include="$(MSBuildThisFileDirectory)\..\tools\NServiceBusEventSourceResources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)\..\tools\NServiceBusEventSourceResources.Designer.cs" />
   </ItemGroup>
 </Project>

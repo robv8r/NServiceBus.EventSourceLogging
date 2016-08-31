@@ -29,11 +29,11 @@ namespace NServiceBus.EventSourceLogging
     using System.Collections.Generic;
     using System.Globalization;
     using System.Runtime.CompilerServices;
-    using System.Xml;
     using JetBrains.Annotations;
     using NServiceBus.EventSourceLogging.Properties;
 #if USEMDT
     using Microsoft.Diagnostics.Tracing;
+
 #else
     using System.Diagnostics.Tracing;
 
@@ -45,270 +45,80 @@ namespace NServiceBus.EventSourceLogging
     public abstract class EventSourceLoggerBase : EventSource, IEventSourceLogger
     {
         private static readonly string InvalidFormatErrorString = Resources.InvalidFormatErrorString;
-        private readonly EventChannel debugChannel = EventChannel.None;
-        private readonly int debugEventId = 1009;
-        private readonly EventChannel debugExceptionChannel = EventChannel.None;
-        private readonly int debugExceptionEventId = 1010;
-        private readonly EventKeywords debugExceptionKeywords = EventKeywords.None;
-        private readonly EventLevel debugExceptionLevel = EventLevel.Verbose;
-        private readonly EventKeywords debugKeywords = EventKeywords.None;
-        private readonly EventLevel debugLevel = EventLevel.Verbose;
-        private readonly EventChannel errorChannel = EventChannel.None;
-        private readonly int errorEventId = 1003;
-        private readonly EventChannel errorExceptionChannel = EventChannel.None;
-        private readonly int errorExceptionEventId = 1004;
-        private readonly EventKeywords errorExceptionKeywords = EventKeywords.None;
-        private readonly EventLevel errorExceptionLevel = EventLevel.Error;
-        private readonly EventKeywords errorKeywords = EventKeywords.None;
-        private readonly EventLevel errorLevel = EventLevel.Error;
-        private readonly EventChannel fatalChannel = EventChannel.None;
-        private readonly int fatalEventId = 1001;
-        private readonly EventChannel fatalExceptionChannel = EventChannel.None;
-        private readonly int fatalExceptionEventId = 1002;
-        private readonly EventKeywords fatalExceptionKeywords = EventKeywords.None;
-        private readonly EventLevel fatalExceptionLevel = EventLevel.Critical;
-        private readonly EventKeywords fatalKeywords = EventKeywords.None;
-        private readonly EventLevel fatalLevel = EventLevel.Critical;
-        private readonly EventChannel infoChannel = EventChannel.None;
-        private readonly int infoEventId = 1007;
-        private readonly EventChannel infoExceptionChannel = EventChannel.None;
-        private readonly int infoExceptionEventId = 1008;
-        private readonly EventKeywords infoExceptionKeywords = EventKeywords.None;
-        private readonly EventLevel infoExceptionLevel = EventLevel.Informational;
-        private readonly EventKeywords infoKeywords = EventKeywords.None;
-        private readonly EventLevel infoLevel = EventLevel.Informational;
-        private readonly EventChannel warnChannel = EventChannel.None;
-        private readonly int warnEventId = 1005;
-        private readonly EventChannel warnExceptionChannel = EventChannel.None;
-        private readonly int warnExceptionEventId = 1006;
-        private readonly EventKeywords warnExceptionKeywords = EventKeywords.None;
-        private readonly EventLevel warnExceptionLevel = EventLevel.Warning;
-        private readonly EventKeywords warnKeywords = EventKeywords.None;
-        private readonly EventLevel warnLevel = EventLevel.Warning;
+
+        private bool isDebugConfigured;
+        private bool isDebugExceptionConfigured;
+        private bool isErrorConfigured;
+        private bool isErrorExceptionConfigured;
+        private bool isFatalConfigured;
+        private bool isFatalExceptionConfigured;
+        private bool isInfoConfigured;
+        private bool isInfoExceptionConfigured;
+        private bool isWarnConfigured;
+        private bool isWarnExceptionConfigured;
+
+        private EventChannel debugChannel = EventChannel.None;
+        private int debugEventId = 1009;
+        private EventChannel debugExceptionChannel = EventChannel.None;
+        private int debugExceptionEventId = 1010;
+        private EventKeywords debugExceptionKeywords = EventKeywords.None;
+        private EventLevel debugExceptionLevel = EventLevel.Verbose;
+        private EventKeywords debugKeywords = EventKeywords.None;
+        private EventLevel debugLevel = EventLevel.Verbose;
+        private EventChannel errorChannel = EventChannel.None;
+        private int errorEventId = 1003;
+        private EventChannel errorExceptionChannel = EventChannel.None;
+        private int errorExceptionEventId = 1004;
+        private EventKeywords errorExceptionKeywords = EventKeywords.None;
+        private EventLevel errorExceptionLevel = EventLevel.Error;
+        private EventKeywords errorKeywords = EventKeywords.None;
+        private EventLevel errorLevel = EventLevel.Error;
+        private EventChannel fatalChannel = EventChannel.None;
+        private int fatalEventId = 1001;
+        private EventChannel fatalExceptionChannel = EventChannel.None;
+        private int fatalExceptionEventId = 1002;
+        private EventKeywords fatalExceptionKeywords = EventKeywords.None;
+        private EventLevel fatalExceptionLevel = EventLevel.Critical;
+        private EventKeywords fatalKeywords = EventKeywords.None;
+        private EventLevel fatalLevel = EventLevel.Critical;
+        private EventChannel infoChannel = EventChannel.None;
+        private int infoEventId = 1007;
+        private EventChannel infoExceptionChannel = EventChannel.None;
+        private int infoExceptionEventId = 1008;
+        private EventKeywords infoExceptionKeywords = EventKeywords.None;
+        private EventLevel infoExceptionLevel = EventLevel.Informational;
+        private EventKeywords infoKeywords = EventKeywords.None;
+        private EventLevel infoLevel = EventLevel.Informational;
+        private EventChannel warnChannel = EventChannel.None;
+        private int warnEventId = 1005;
+        private EventChannel warnExceptionChannel = EventChannel.None;
+        private int warnExceptionEventId = 1006;
+        private EventKeywords warnExceptionKeywords = EventKeywords.None;
+        private EventLevel warnExceptionLevel = EventLevel.Warning;
+        private EventKeywords warnKeywords = EventKeywords.None;
+        private EventLevel warnLevel = EventLevel.Warning;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="EventSourceLoggerBase" /> class.
         /// </summary>
         protected EventSourceLoggerBase()
         {
-            // First, get the Event Source manifest as XML.
-            var manifest = GenerateManifest(
+            var manifestXml = GenerateManifest(
                 this.GetType(),
                 this.GetType().Assembly.Location,
-                EventManifestOptions.AllowEventSourceOverride | EventManifestOptions.AllCultures);
+                EventManifestOptions.AllowEventSourceOverride);
 
-            if (manifest == null)
+            if (manifestXml == null)
             {
                 return;
             }
 
-            // Load the manifest into an XmlDocument so we can query it.
-            var doc = new XmlDocument();
-            doc.LoadXml(manifest);
-            var root = doc.DocumentElement;
+            var eventSourceManifest = new EventSourceManifest(manifestXml);
+            var attributes = eventSourceManifest.EventAttributes;
 
-            if (root == null)
+            foreach (var attribute in attributes)
             {
-                return;
-            }
-
-            if (doc.NameTable == null)
-            {
-                return;
-            }
-
-            var nsmgr = new XmlNamespaceManager(doc.NameTable);
-            nsmgr.AddNamespace("e", "http://schemas.microsoft.com/win/2004/08/events");
-
-            var keywordDictionary = new Dictionary<string, EventKeywords>();
-
-            var keywordNodes =
-                root.FirstChild?.SelectNodes("//e:provider[@name = '" + this.Name + "']/e:keywords/e:keyword", nsmgr);
-
-            if (keywordNodes != null)
-            {
-                foreach (var nodeObject in keywordNodes)
-                {
-                    var node = nodeObject as XmlNode;
-
-                    if (node?.Attributes == null)
-                    {
-                        continue;
-                    }
-
-                    var mask = 0L;
-                    string name = null;
-
-                    foreach (var attributeObject in node.Attributes)
-                    {
-                        var attribute = attributeObject as XmlAttribute;
-
-                        if (attribute?.Name == null || attribute.Value == null)
-                        {
-                            continue;
-                        }
-
-                        switch (attribute.Name)
-                        {
-                            case "mask":
-                                if (!string.IsNullOrWhiteSpace(attribute.Value) && attribute.Value.StartsWith("0x", StringComparison.CurrentCulture))
-                                {
-                                    mask = Convert.ToInt64(attribute.Value, 16);
-                                }
-
-                                break;
-                            case "name":
-                                name = attribute.Value;
-                                break;
-                        }
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(name) && mask > 0)
-                    {
-                        keywordDictionary.Add(name, (EventKeywords)mask);
-                    }
-                }
-            }
-
-            var nodes = root.FirstChild?.SelectNodes(
-                "//e:provider[@name = '" + this.Name + "']/e:events/e:event",
-                nsmgr);
-
-            if (nodes == null)
-            {
-                return;
-            }
-
-            foreach (var nodeObject in nodes)
-            {
-                var node = nodeObject as XmlNode;
-
-                if (node?.Attributes == null)
-                {
-                    continue;
-                }
-
-                var level = EventLevel.Informational;
-                var channel = EventChannel.None;
-                var eventId = -1;
-                var keywords = EventKeywords.None;
-                string symbol = null;
-
-                foreach (var attributeObject in node.Attributes)
-                {
-                    var attribute = attributeObject as XmlAttribute;
-
-                    if (attribute?.Name == null || attribute.Value == null)
-                    {
-                        continue;
-                    }
-
-                    switch (attribute.Name)
-                    {
-                        case "value":
-                            if (!int.TryParse(attribute.Value, out eventId))
-                            {
-                            }
-
-                            break;
-                        case "level":
-                            level = GetLevel(attribute.Value);
-                            break;
-                        case "channel":
-                            if (!Enum.TryParse(attribute.Value, out channel))
-                            {
-                            }
-
-                            break;
-                        case "keywords":
-                            if (!string.IsNullOrWhiteSpace(attribute.Value))
-                            {
-                                var keywordStrings = attribute.Value.Split(' ');
-
-                                foreach (var keywordString in keywordStrings)
-                                {
-                                    if (keywordDictionary.ContainsKey(keywordString))
-                                    {
-                                        keywords = keywords | keywordDictionary[keywordString];
-                                    }
-                                }
-                            }
-
-                            break;
-                        case "symbol":
-                            symbol = attribute.Value;
-                            break;
-                    }
-                }
-
-                if (eventId > 0 && string.IsNullOrWhiteSpace(symbol))
-                {
-                    continue;
-                }
-
-                switch (symbol)
-                {
-                    case nameof(this.Debug):
-                        this.debugChannel = channel;
-                        this.debugEventId = eventId;
-                        this.debugLevel = level;
-                        this.debugKeywords = keywords;
-                        break;
-                    case nameof(this.DebugException):
-                        this.debugExceptionChannel = channel;
-                        this.debugExceptionEventId = eventId;
-                        this.debugExceptionLevel = level;
-                        this.debugExceptionKeywords = keywords;
-                        break;
-                    case nameof(this.Info):
-                        this.infoChannel = channel;
-                        this.infoEventId = eventId;
-                        this.infoLevel = level;
-                        this.infoKeywords = keywords;
-                        break;
-                    case nameof(this.InfoException):
-                        this.infoExceptionChannel = channel;
-                        this.infoExceptionEventId = eventId;
-                        this.infoExceptionLevel = level;
-                        this.infoExceptionKeywords = keywords;
-                        break;
-                    case nameof(this.Error):
-                        this.errorChannel = channel;
-                        this.errorEventId = eventId;
-                        this.errorLevel = level;
-                        this.errorKeywords = keywords;
-                        break;
-                    case nameof(this.ErrorException):
-                        this.errorExceptionChannel = channel;
-                        this.errorExceptionEventId = eventId;
-                        this.errorExceptionLevel = level;
-                        this.errorExceptionKeywords = keywords;
-                        break;
-                    case nameof(this.Fatal):
-                        this.fatalChannel = channel;
-                        this.fatalEventId = eventId;
-                        this.fatalLevel = level;
-                        this.fatalKeywords = keywords;
-                        break;
-                    case nameof(this.FatalException):
-                        this.fatalExceptionChannel = channel;
-                        this.fatalExceptionEventId = eventId;
-                        this.fatalExceptionLevel = level;
-                        this.fatalExceptionKeywords = keywords;
-                        break;
-                    case nameof(this.Warn):
-                        this.warnChannel = channel;
-                        this.warnEventId = eventId;
-                        this.warnLevel = level;
-                        this.warnKeywords = keywords;
-                        break;
-                    case nameof(this.WarnException):
-                        this.warnExceptionChannel = channel;
-                        this.warnExceptionEventId = eventId;
-                        this.warnExceptionLevel = level;
-                        this.warnExceptionKeywords = keywords;
-                        break;
-                }
+                this.SetEventDefinition(attribute);
             }
         }
 
@@ -341,70 +151,70 @@ namespace NServiceBus.EventSourceLogging
         ///     Gets a value indicating whether the Debug event is enabled.
         /// </summary>
         [PublicAPI]
-        protected bool IsDebugEventEnabled => this.IsEnabled(this.debugLevel, this.debugKeywords, this.debugChannel);
+        protected bool IsDebugEventEnabled => this.isDebugConfigured && this.IsEnabled(this.debugLevel, this.debugKeywords, this.debugChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the DebugException event is enabled.
         /// </summary>
         [PublicAPI]
         protected bool IsDebugExceptionEventEnabled =>
-            this.IsEnabled(this.debugExceptionLevel, this.debugExceptionKeywords, this.debugExceptionChannel);
+            this.isDebugExceptionConfigured && this.IsEnabled(this.debugExceptionLevel, this.debugExceptionKeywords, this.debugExceptionChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the Error event is enabled.
         /// </summary>
         [PublicAPI]
         protected bool IsErrorEventEnabled =>
-            this.IsEnabled(this.errorLevel, this.errorKeywords, this.errorChannel);
+            this.isErrorConfigured && this.IsEnabled(this.errorLevel, this.errorKeywords, this.errorChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the ErrorException event is enabled.
         /// </summary>
         [PublicAPI]
         protected bool IsErrorExceptionEventEnabled =>
-            this.IsEnabled(this.errorExceptionLevel, this.errorExceptionKeywords, this.errorExceptionChannel);
+            this.isErrorExceptionConfigured && this.IsEnabled(this.errorExceptionLevel, this.errorExceptionKeywords, this.errorExceptionChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the Fatal event is enabled.
         /// </summary>
         [PublicAPI]
         protected bool IsFatalEventEnabled =>
-            this.IsEnabled(this.fatalLevel, this.fatalKeywords, this.fatalChannel);
+            this.isFatalConfigured && this.IsEnabled(this.fatalLevel, this.fatalKeywords, this.fatalChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the FatalException event is enabled.
         /// </summary>
         [PublicAPI]
         protected bool IsFatalExceptionEventEnabled =>
-            this.IsEnabled(this.fatalExceptionLevel, this.fatalExceptionKeywords, this.fatalExceptionChannel);
+            this.isFatalExceptionConfigured && this.IsEnabled(this.fatalExceptionLevel, this.fatalExceptionKeywords, this.fatalExceptionChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the Info event is enabled.
         /// </summary>
         [PublicAPI]
         protected bool IsInfoEventEnabled =>
-            this.IsEnabled(this.infoLevel, this.infoKeywords, this.infoChannel);
+            this.isInfoConfigured && this.IsEnabled(this.infoLevel, this.infoKeywords, this.infoChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the InfoException event is enabled.
         /// </summary>
         [PublicAPI]
         protected bool IsInfoExceptionEventEnabled =>
-            this.IsEnabled(this.infoExceptionLevel, this.infoExceptionKeywords, this.infoExceptionChannel);
+            this.isInfoExceptionConfigured && this.IsEnabled(this.infoExceptionLevel, this.infoExceptionKeywords, this.infoExceptionChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the Warn event is enabled.
         /// </summary>
         [PublicAPI]
         protected bool IsWarnEventEnabled =>
-            this.IsEnabled(this.warnLevel, this.warnKeywords, this.warnChannel);
+            this.isWarnConfigured && this.IsEnabled(this.warnLevel, this.warnKeywords, this.warnChannel);
 
         /// <summary>
         ///     Gets a value indicating whether the WarnException event is enabled.
         /// </summary>
         [PublicAPI]
         protected bool IsWarnExceptionEventEnabled =>
-            this.IsEnabled(this.warnExceptionLevel, this.warnExceptionKeywords, this.warnExceptionChannel);
+            this.isWarnExceptionConfigured && this.IsEnabled(this.warnExceptionLevel, this.warnExceptionKeywords, this.warnExceptionChannel);
 
         /// <summary>
         ///     If Debug level logging is enabled, writes an event with the given parameters.
@@ -460,8 +270,14 @@ namespace NServiceBus.EventSourceLogging
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual void Debug(string logger, string format, params object[] args)
         {
-            if (!this.IsDebugEnabled || format == null || args == null)
+            if (!this.IsDebugEnabled || format == null)
             {
+                return;
+            }
+
+            if (args == null)
+            {
+                this.Debug(logger, format);
                 return;
             }
 
@@ -555,8 +371,14 @@ namespace NServiceBus.EventSourceLogging
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual void Error(string logger, string format, params object[] args)
         {
-            if (!this.IsErrorEnabled || format == null || args == null)
+            if (!this.IsErrorEnabled || format == null)
             {
+                return;
+            }
+
+            if (args == null)
+            {
+                this.Error(logger, format);
                 return;
             }
 
@@ -650,8 +472,14 @@ namespace NServiceBus.EventSourceLogging
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual void Fatal(string logger, string format, params object[] args)
         {
-            if (!this.IsFatalEnabled || format == null || args == null)
+            if (!this.IsFatalEnabled || format == null)
             {
+                return;
+            }
+
+            if (args == null)
+            {
+                this.Fatal(logger, format);
                 return;
             }
 
@@ -745,8 +573,14 @@ namespace NServiceBus.EventSourceLogging
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual void Info(string logger, string format, params object[] args)
         {
-            if (!this.IsInfoEnabled || format == null || args == null)
+            if (!this.IsInfoEnabled || format == null)
             {
+                return;
+            }
+
+            if (args == null)
+            {
+                this.Info(logger, format);
                 return;
             }
 
@@ -840,8 +674,14 @@ namespace NServiceBus.EventSourceLogging
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual void Warn(string logger, string format, params object[] args)
         {
-            if (!this.IsWarnEnabled || format == null || args == null)
+            if (!this.IsWarnEnabled || format == null)
             {
+                return;
+            }
+
+            if (args == null)
+            {
+                this.Warn(logger, format);
                 return;
             }
 
@@ -883,24 +723,84 @@ namespace NServiceBus.EventSourceLogging
             }
         }
 
-        private static EventLevel GetLevel(string manifestLevel)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void SetEventDefinition(KeyValuePair<string, EventAttribute> attribute)
         {
-            switch (manifestLevel)
+            var eventAttribute = attribute.Value;
+            System.Diagnostics.Debug.Assert(eventAttribute != null, "eventAttribute != null");
+
+            switch (attribute.Key)
             {
-                case "win:LogAlways":
-                    return EventLevel.LogAlways;
-                case "win:Warning":
-                    return EventLevel.Warning;
-                case "win:Critical":
-                    return EventLevel.Critical;
-                case "win:Error":
-                    return EventLevel.Error;
-                case "win:Informational":
-                    return EventLevel.Informational;
-                case "win:Verbose":
-                    return EventLevel.Verbose;
-                default:
-                    return EventLevel.Informational;
+                case nameof(this.Debug):
+                    this.debugChannel = eventAttribute.Channel;
+                    this.debugEventId = eventAttribute.EventId;
+                    this.debugLevel = eventAttribute.Level;
+                    this.debugKeywords = eventAttribute.Keywords;
+                    this.isDebugConfigured = true;
+                    break;
+                case nameof(this.DebugException):
+                    this.debugExceptionChannel = eventAttribute.Channel;
+                    this.debugExceptionEventId = eventAttribute.EventId;
+                    this.debugExceptionLevel = eventAttribute.Level;
+                    this.debugExceptionKeywords = eventAttribute.Keywords;
+                    this.isDebugExceptionConfigured = true;
+                    break;
+                case nameof(this.Info):
+                    this.infoChannel = eventAttribute.Channel;
+                    this.infoEventId = eventAttribute.EventId;
+                    this.infoLevel = eventAttribute.Level;
+                    this.infoKeywords = eventAttribute.Keywords;
+                    this.isInfoConfigured = true;
+                    break;
+                case nameof(this.InfoException):
+                    this.infoExceptionChannel = eventAttribute.Channel;
+                    this.infoExceptionEventId = eventAttribute.EventId;
+                    this.infoExceptionLevel = eventAttribute.Level;
+                    this.infoExceptionKeywords = eventAttribute.Keywords;
+                    this.isInfoExceptionConfigured = true;
+                    break;
+                case nameof(this.Error):
+                    this.errorChannel = eventAttribute.Channel;
+                    this.errorEventId = eventAttribute.EventId;
+                    this.errorLevel = eventAttribute.Level;
+                    this.errorKeywords = eventAttribute.Keywords;
+                    this.isErrorConfigured = true;
+                    break;
+                case nameof(this.ErrorException):
+                    this.errorExceptionChannel = eventAttribute.Channel;
+                    this.errorExceptionEventId = eventAttribute.EventId;
+                    this.errorExceptionLevel = eventAttribute.Level;
+                    this.errorExceptionKeywords = eventAttribute.Keywords;
+                    this.isErrorExceptionConfigured = true;
+                    break;
+                case nameof(this.Fatal):
+                    this.fatalChannel = eventAttribute.Channel;
+                    this.fatalEventId = eventAttribute.EventId;
+                    this.fatalLevel = eventAttribute.Level;
+                    this.fatalKeywords = eventAttribute.Keywords;
+                    this.isFatalConfigured = true;
+                    break;
+                case nameof(this.FatalException):
+                    this.fatalExceptionChannel = eventAttribute.Channel;
+                    this.fatalExceptionEventId = eventAttribute.EventId;
+                    this.fatalExceptionLevel = eventAttribute.Level;
+                    this.fatalExceptionKeywords = eventAttribute.Keywords;
+                    this.isFatalExceptionConfigured = true;
+                    break;
+                case nameof(this.Warn):
+                    this.warnChannel = eventAttribute.Channel;
+                    this.warnEventId = eventAttribute.EventId;
+                    this.warnLevel = eventAttribute.Level;
+                    this.warnKeywords = eventAttribute.Keywords;
+                    this.isWarnConfigured = true;
+                    break;
+                case nameof(this.WarnException):
+                    this.warnExceptionChannel = eventAttribute.Channel;
+                    this.warnExceptionEventId = eventAttribute.EventId;
+                    this.warnExceptionLevel = eventAttribute.Level;
+                    this.warnExceptionKeywords = eventAttribute.Keywords;
+                    this.isWarnExceptionConfigured = true;
+                    break;
             }
         }
 
@@ -913,7 +813,6 @@ namespace NServiceBus.EventSourceLogging
         /// <param name="arg3">The third string.</param>
         /// <param name="arg4">The fourth string.</param>
         /// <param name="arg5">The fifth string.</param>
-        [NonEvent]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private unsafe void WriteEvent(
             int eventId,

@@ -57,9 +57,9 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
         /// </remarks>
         private static void Main()
         {
-            using (var listener = new CustomEventSourceListener())
+            using (var listener = new CustomEventListener())
             {
-                listener.EnableEvents(CustomEventLogEventSource.Log, EventLevel.Informational);
+                listener.EnableEvents(EventSourceLogger.Log, EventLevel.Informational);
 
                 // Configure Logger
                 var logManager = LogManager.Use<EventSourceLoggingFactory>();
@@ -69,7 +69,7 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
                     throw new InvalidOperationException("Logger is null.");
                 }
 
-                logManager.WithLogger(CustomEventLogEventSource.Log);
+                logManager.WithLogger(EventSourceLogger.Log);
 
                 var logger = LogManager.GetLogger("Example");
 

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
     <metadata>
         <id>NServiceBus.EventSourceLogging</id>
-        <version>1.0.0-beta03</version>
+        <version>1.0.0-beta04</version>
         <title>NServiceBus.EventSourceLogging</title>
         <authors>Rob Winningham</authors>
         <owners>Rob Winningham</owners>
@@ -16,7 +16,6 @@
         <dependencies>
             <group targetFramework="net45">
                 <dependency id="NServiceBus" version="5.0.0" />
-                <dependency id="Microsoft.Diagnostics.Tracing.EventRegister" version="1.1.28" />
                 <dependency id="Microsoft.Diagnostics.Tracing.EventSource.Redist" version="1.1.28" />
             </group>
             <group targetFramework="net46">
@@ -25,14 +24,14 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.Net45.dll" target="lib\net45" />
-        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.Net45.pdb" target="lib\net45" />
-        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.Net45.xml" target="lib\net45" />
+        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.dll" target="lib\net45" />
+        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.pdb" target="lib\net45" />
+        <file src="NSBETW.Net45\bin\Release\NServiceBus.EventSourceLogging.xml" target="lib\net45" />
         <file src="NSBETW.Net45\bin\Release\*.pp" target="content\net45" />
         
-        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.Net46.dll" target="lib\net46" />
-        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.Net46.pdb" target="lib\net46" />
-        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.Net46.xml" target="lib\net46" />
+        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.dll" target="lib\net46" />
+        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.pdb" target="lib\net46" />
+        <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.xml" target="lib\net46" />
         <file src="NSBETW.Net46\bin\Release\*.pp" target="content\net46" />
         
         <file src="msbuild\NServiceBus.EventSourceLogging.*" target="build" />

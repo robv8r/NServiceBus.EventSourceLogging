@@ -4,17 +4,16 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <ProjectGuid>{9FA52C4C-A1FD-4C03-B70E-DEE29468110A}</ProjectGuid>
-    <AssemblyName>NServiceBus.EventSourceLogging.Net46</AssemblyName>
+    <AssemblyName>NServiceBus.EventSourceLogging</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <OutputType>Library</OutputType>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DocumentationFile>bin\Debug\NServiceBus.EventSourceLogging.Net46.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\NServiceBus.EventSourceLogging.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DocumentationFile>bin\Release\NServiceBus.EventSourceLogging.Net46.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\NServiceBus.EventSourceLogging.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NServiceBus.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
@@ -55,9 +54,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="EventSourceLogger.cs.pp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="EventLogLogger.cs.pp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Properties\AssemblyInfo.cs" />

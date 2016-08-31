@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CustomEventSourceListener.cs" company="Rob Winningham">
+// <copyright file="CustomEventListener.cs" company="Rob Winningham">
 //   MIT License
 //
 //   Copyright (c) 2016 Rob Winningham
@@ -36,16 +36,16 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
     /// <summary>
     /// Example event source listener.  Typically, you wouldn't consume events in the same application as you publish them.  This is for example purposes only.
     /// </summary>
-    internal class CustomEventSourceListener : EventListener
+    internal class CustomEventListener : EventListener
     {
         private static readonly EventKeywords[] AvailableKeywords =
                 {
-                    CustomEventLogEventSource.Keywords.Warning,
-                    CustomEventLogEventSource.Keywords.Critical,
-                    CustomEventLogEventSource.Keywords.Debug,
-                    CustomEventLogEventSource.Keywords.Error,
-                    CustomEventLogEventSource.Keywords.ExceptionData,
-                    CustomEventLogEventSource.Keywords.Informational
+                    EventSourceLogger.Keywords.Warning,
+                    EventSourceLogger.Keywords.Critical,
+                    EventSourceLogger.Keywords.Debug,
+                    EventSourceLogger.Keywords.Error,
+                    EventSourceLogger.Keywords.ExceptionData,
+                    EventSourceLogger.Keywords.Informational
                 };
 
         /// <summary>Called whenever an event has been written by an event source for which the event listener has enabled events.</summary>
@@ -94,23 +94,23 @@ namespace NServiceBus.EventSourceLogging.Samples.CustomEventLog
 
                 switch (kw)
                 {
-                    case CustomEventLogEventSource.Keywords.Warning:
-                        yield return nameof(CustomEventLogEventSource.Keywords.Warning);
+                    case EventSourceLogger.Keywords.Warning:
+                        yield return nameof(EventSourceLogger.Keywords.Warning);
                         break;
-                    case CustomEventLogEventSource.Keywords.Critical:
-                        yield return nameof(CustomEventLogEventSource.Keywords.Critical);
+                    case EventSourceLogger.Keywords.Critical:
+                        yield return nameof(EventSourceLogger.Keywords.Critical);
                         break;
-                    case CustomEventLogEventSource.Keywords.Debug:
-                        yield return nameof(CustomEventLogEventSource.Keywords.Debug);
+                    case EventSourceLogger.Keywords.Debug:
+                        yield return nameof(EventSourceLogger.Keywords.Debug);
                         break;
-                    case CustomEventLogEventSource.Keywords.Error:
-                        yield return nameof(CustomEventLogEventSource.Keywords.Error);
+                    case EventSourceLogger.Keywords.Error:
+                        yield return nameof(EventSourceLogger.Keywords.Error);
                         break;
-                    case CustomEventLogEventSource.Keywords.ExceptionData:
-                        yield return nameof(CustomEventLogEventSource.Keywords.ExceptionData);
+                    case EventSourceLogger.Keywords.ExceptionData:
+                        yield return nameof(EventSourceLogger.Keywords.ExceptionData);
                         break;
-                    case CustomEventLogEventSource.Keywords.Informational:
-                        yield return nameof(CustomEventLogEventSource.Keywords.Informational);
+                    case EventSourceLogger.Keywords.Informational:
+                        yield return nameof(EventSourceLogger.Keywords.Informational);
                         break;
                 }
             }

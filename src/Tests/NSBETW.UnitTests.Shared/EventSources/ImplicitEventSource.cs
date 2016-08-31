@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SharedAssemblyInfo.cs" company="Rob Winningham">
+// <copyright file="ImplicitEventSource.cs" company="Rob Winningham">
 //   MIT License
 //
 //   Copyright (c) 2016 Rob Winningham
@@ -23,20 +23,28 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Reflection;
-using System.Resources;
-using System.Runtime.InteropServices;
 
-[assembly: AssemblyCompany("Rob Winningham")]
-[assembly: AssemblyCopyright("Copyright © Rob Winningham 2016")]
-[assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguage("en")]
-[assembly: CLSCompliant(true)]
-[assembly: ComVisible(false)]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.4")]
+namespace NServiceBus.EventSourceLogging.UnitTests.EventSources
+{
+#if USEMDT
+    using Microsoft.Diagnostics.Tracing;
+#else
+    using System.Diagnostics.Tracing;
 
-#if DEBUG
-[assembly: AssemblyConfiguration("DEBUG")]
 #endif
+
+    /// <summary>
+    ///     An implicit <see cref="EventSource" />
+    /// </summary>
+    public sealed class ImplicitEventSource : EventSource
+    {
+        /// <summary>
+        ///     The first event.
+        /// </summary>
+        /// <param name="message">The message to write</param>
+        public void FirstEvent(string message)
+        {
+            this.WriteEvent(1, message);
+        }
+    }
+}

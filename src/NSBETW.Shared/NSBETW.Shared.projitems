@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)EventSourceLoggerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventSourceLoggingFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventSourceManifest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEventSourceLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\JetBrainsAnnotations.cs" />

@@ -68,5 +68,32 @@ namespace NServiceBus.EventSourceLogging.Properties {
                 return ResourceManager.GetString("InvalidFormatErrorString", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The XML manifest did not contain the provider&apos;s name..
+        /// </summary>
+        internal static string XmlManifestDidNotContainTheProvidersName {
+            get {
+                return ResourceManager.GetString("XmlManifestDidNotContainTheProvidersName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XML Manifest does not contain a document element..
+        /// </summary>
+        internal static string XmlManifestDoesNotContainDocumentElement {
+            get {
+                return ResourceManager.GetString("XmlManifestDoesNotContainDocumentElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XML Manifest does not contain a name table..
+        /// </summary>
+        internal static string XmlManifestDoesNotContainNameTable {
+            get {
+                return ResourceManager.GetString("XmlManifestDoesNotContainNameTable", resourceCulture);
+            }
+        }
     }
 }

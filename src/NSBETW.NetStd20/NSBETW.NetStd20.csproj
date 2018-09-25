@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>NServiceBus.EventSourceLogging</RootNamespace>
+    <AssemblyName>NServiceBus.EventSourceLogging</AssemblyName>
+    <PackageTags>NServiceBus;Logging;ETW;EventSource</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/robv8r/NServiceBus.EventSourceLogging/master/icons/package_icon.png</PackageIconUrl>
+    <Authors>Rob Winningham</Authors>
+    <Copyright>Copyright © Rob Winningham 2016</Copyright>
+    <PackageProjectUrl>https://github.com/robv8r/NServiceBus.EventSourceLogging</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/robv8r/NServiceBus.EventSourceLogging/master/LICENSE</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageVersion>2.0.13-beta02</PackageVersion>
+  </PropertyGroup>
+
+  <Import Project="..\NSBETW.Shared\NSBETW.Shared.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="DRHorton.Build.Process.StrongName" Version="2.0.1" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" PrivateAssets="All" />
+    <PackageReference Include="NServiceBus" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

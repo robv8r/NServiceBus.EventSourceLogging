@@ -23,11 +23,11 @@
 //   SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Reflection;
-
-#if !NETSTANDARD
-[assembly: AssemblyTitle("NServiceBus.EventSourceLogging")]
-[assembly: AssemblyProduct("NServiceBus.EventSourceLogging")]
-#endif
-
-[assembly: AssemblyDescription("ETW integration for NServiceBus")]
+//using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+//#if SIGNED
+//[assembly: InternalsVisibleTo("NServiceBus.EventSourceLogging.UnitTests.Net46, PublicKey=002400000480000094000000060200000024000052534131000400000100010097263141eeb008a5dc8706847214edf3c7dc3ead55456de03c58c219fbd720d375ebb49b849ae028fc3ca7ff0bff189cd9c6007d2897c2d3bec1c954f9ba518bbe55aabce39cc5395f4421a89e9d8b5efe307c1ed00f3c8af8f135dbced9e19b1384aedc6b3dfcbf81e2d8ee18f8c60ecf489fde4eae9ebc439f0fcd2a7d4dbd")]
+//#else
+//[assembly: InternalsVisibleTo("NServiceBus.EventSourceLogging.UnitTests.Net46")]
+//#endif
+[assembly: Guid("72040B50-AA59-4D9A-B3F1-AF87B45FE837")]

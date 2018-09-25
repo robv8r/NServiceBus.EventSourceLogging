@@ -21,6 +21,9 @@
             <group targetFramework="net46">
                 <dependency id="NServiceBus" version="5.0.0" />
             </group>
+            <group targetFramework="netstandard2.0">
+                <dependency id="NServiceBus" version="7.0.0" />
+            </group>
         </dependencies>
     </metadata>
     <files>
@@ -33,7 +36,10 @@
         <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.pdb" target="lib\net46" />
         <file src="NSBETW.Net46\bin\Release\NServiceBus.EventSourceLogging.xml" target="lib\net46" />
         <file src="NSBETW.Net46\bin\Release\*.pp" target="content\net46" />
-        
+
+        <file src="NSBETW.NetStd20\bin\Release\netstandard2.0\NServiceBus.EventSourceLogging.dll" target="lib\netstandard2.0" />
+        <file src="NSBETW.NetStd20\bin\Release\netstandard2.0\NServiceBus.EventSourceLogging.pdb" target="lib\netstandard2.0" />
+      
         <file src="msbuild\NServiceBus.EventSourceLogging.*" target="build" />
         <file src="NSBETW.Net46\Properties\NServiceBusEventSourceResources.resx" target="tools" />
         <file src="NSBETW.Net46\Properties\NServiceBusEventSourceResources.Designer.cs" target="tools" />

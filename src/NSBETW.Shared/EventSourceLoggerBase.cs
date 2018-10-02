@@ -58,41 +58,41 @@ namespace NServiceBus.EventSourceLogging
         private bool isWarnExceptionConfigured;
 
         private EventChannel debugChannel = EventChannel.None;
-        private int debugEventId = 1009;
+        private int debugEventId = NServiceBusEtwConstants.DebugEventId;
         private EventChannel debugExceptionChannel = EventChannel.None;
-        private int debugExceptionEventId = 1010;
+        private int debugExceptionEventId = NServiceBusEtwConstants.DebugExceptionEventId;
         private EventKeywords debugExceptionKeywords = EventKeywords.None;
         private EventLevel debugExceptionLevel = EventLevel.Verbose;
         private EventKeywords debugKeywords = EventKeywords.None;
         private EventLevel debugLevel = EventLevel.Verbose;
         private EventChannel errorChannel = EventChannel.None;
-        private int errorEventId = 1003;
+        private int errorEventId = NServiceBusEtwConstants.ErrorEventId;
         private EventChannel errorExceptionChannel = EventChannel.None;
-        private int errorExceptionEventId = 1004;
+        private int errorExceptionEventId = NServiceBusEtwConstants.ErrorExceptionEventId;
         private EventKeywords errorExceptionKeywords = EventKeywords.None;
         private EventLevel errorExceptionLevel = EventLevel.Error;
         private EventKeywords errorKeywords = EventKeywords.None;
         private EventLevel errorLevel = EventLevel.Error;
         private EventChannel fatalChannel = EventChannel.None;
-        private int fatalEventId = 1001;
+        private int fatalEventId = NServiceBusEtwConstants.FatalEventId;
         private EventChannel fatalExceptionChannel = EventChannel.None;
-        private int fatalExceptionEventId = 1002;
+        private int fatalExceptionEventId = NServiceBusEtwConstants.FatalExceptionEventId;
         private EventKeywords fatalExceptionKeywords = EventKeywords.None;
         private EventLevel fatalExceptionLevel = EventLevel.Critical;
         private EventKeywords fatalKeywords = EventKeywords.None;
         private EventLevel fatalLevel = EventLevel.Critical;
         private EventChannel infoChannel = EventChannel.None;
-        private int infoEventId = 1007;
+        private int infoEventId = NServiceBusEtwConstants.InfoEventId;
         private EventChannel infoExceptionChannel = EventChannel.None;
-        private int infoExceptionEventId = 1008;
+        private int infoExceptionEventId = NServiceBusEtwConstants.InfoExceptionEventId;
         private EventKeywords infoExceptionKeywords = EventKeywords.None;
         private EventLevel infoExceptionLevel = EventLevel.Informational;
         private EventKeywords infoKeywords = EventKeywords.None;
         private EventLevel infoLevel = EventLevel.Informational;
         private EventChannel warnChannel = EventChannel.None;
-        private int warnEventId = 1005;
+        private int warnEventId = NServiceBusEtwConstants.WarnEventId;
         private EventChannel warnExceptionChannel = EventChannel.None;
-        private int warnExceptionEventId = 1006;
+        private int warnExceptionEventId = NServiceBusEtwConstants.WarnExceptionEventId;
         private EventKeywords warnExceptionKeywords = EventKeywords.None;
         private EventLevel warnExceptionLevel = EventLevel.Warning;
         private EventKeywords warnKeywords = EventKeywords.None;
@@ -879,6 +879,72 @@ namespace NServiceBus.EventSourceLogging
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Declares ids for those events broadcast by the NServiceBus libraries
+        /// </summary>
+        protected class NServiceBusEtwConstants
+        {
+            /// <summary>  Fatal level  </summary>
+            public const int FatalEventId = 1001;
+
+            /// <summary>  Fatal level with exception info  </summary>
+            public const int FatalExceptionEventId = 1002;
+
+            /// <summary>  Error level  </summary>
+            public const int ErrorEventId = 1003;
+
+            /// <summary>  Error level with exception info  </summary>
+            public const int ErrorExceptionEventId = 1004;
+
+            /// <summary>  Warning level  </summary>
+            public const int WarnEventId = 1005;
+
+            /// <summary>  Warning level with exception info  </summary>
+            public const int WarnExceptionEventId = 1006;
+
+            /// <summary>  Informational level  </summary>
+            public const int InfoEventId = 1007;
+
+            /// <summary>  Informational level with exception info  </summary>
+            public const int InfoExceptionEventId = 1008;
+
+            /// <summary>  Debug level  </summary>
+            public const int DebugEventId = 1009;
+
+            /// <summary>  Debug level with exception info  </summary>
+            public const int DebugExceptionEventId = 1010;
+
+            /// <summary>  Message format for Fatal level  </summary>
+            public const string FatalMessage = "{0} : {1}";
+
+            /// <summary>  Message format for Fatal level with exception info  </summary>
+            public const string FatalExceptionMessage = "{0} : {1} : {2} : {3} : {4}";
+
+            /// <summary>  Message format for Error level  </summary>
+            public const string ErrorMessage = "{0} : {1}";
+
+            /// <summary>  Message format for Error level with exception info  </summary>
+            public const string ErrorExceptionMessage = "{0} : {1} : {2} : {3} : {4}";
+
+            /// <summary>  Message format for Warning level  </summary>
+            public const string WarnMessage = "{0} : {1}";
+
+            /// <summary>  Message format for Warning level with exception info  </summary>
+            public const string WarnExceptionMessage = "{0} : {1} : {2} : {3} : {4}";
+
+            /// <summary>  Message format for Informational level  </summary>
+            public const string InfoMessage = "{0} : {1}";
+
+            /// <summary>  Message format for Informational level with exception info  </summary>
+            public const string InfoExceptionMessage = "{0} : {1} : {2} : {3} : {4}";
+
+            /// <summary>  Message format for Debug level  </summary>
+            public const string DebugMessage = "{0} : {1}";
+
+            /// <summary>  Message format for Debug level with exception info  </summary>
+            public const string DebugExceptionMessage = "{0} : {1} : {2} : {3} : {4}";
         }
     }
 }

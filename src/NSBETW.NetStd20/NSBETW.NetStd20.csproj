@@ -12,13 +12,12 @@
     <PackageProjectUrl>https://github.com/robv8r/NServiceBus.EventSourceLogging</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/robv8r/NServiceBus.EventSourceLogging/master/LICENSE</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageVersion>2.0.13-beta02</PackageVersion>
+    <PackageVersion>1.1.0-beta02</PackageVersion>
   </PropertyGroup>
 
   <Import Project="..\NSBETW.Shared\NSBETW.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="DRHorton.Build.Process.StrongName" Version="2.0.1" PrivateAssets="All" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" PrivateAssets="All" />
     <PackageReference Include="NServiceBus" Version="7.0.0" />
   </ItemGroup>
